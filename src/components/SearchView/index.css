@@ -1,0 +1,33 @@
+.search_view {
+    padding: 80px 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #efefef;
+}
+
+.search_controls_container {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 48px;
+}
+
+.search_controls_container .routes_switcher {
+    width: 290px;
+    height: 48px;
+    background-color: #ececec;
+}
+
+.search_controls_container .search_inputs {
+    display: flex;
+    height: 64px;
+    background-color: #fff;
+}
+
+.swipe_routes_button_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+}

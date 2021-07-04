@@ -1,0 +1,21 @@
+:root {
+    --main-color: #e45d46;
+    --main-color-dark: #d24f39;
+    --main-color-light: #e88372;
+    --main-color-disabled: #f1cfca;
+
+    --main-color-secondary: #f3e6e4;
+    --main-color-secondary-hover: #f4eeed;
+
+    --second-color: #9295F7;
+    --second-color-dark: #7376e7;
+    --second-color-light: #a0a2e5;
+    --second-color-hover: #ABADF7;
+    --second-color-disabled: #DCDDF6;
+
+    --color-font: #181839;
+
+    --ui-transition-time: .1s;
+    --ui-disabled-background-color: #e0e0e0;
+    --ui-disabled-color: #a5a5a5;
+}

@@ -1,0 +1,1 @@
+export const BASE_URL = 'https://minibus-app-backend-14876.nodechef.com/';

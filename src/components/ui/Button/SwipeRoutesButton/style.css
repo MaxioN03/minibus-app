@@ -1,0 +1,13 @@
+.swipe_routes_button {
+    padding: 16px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.swipe_routes_button_icon {
+    width: 16px;
+    height: 16px;
+    background-image: url("./images/swipe_arrows.svg");
+}

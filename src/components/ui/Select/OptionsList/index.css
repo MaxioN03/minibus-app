@@ -1,0 +1,71 @@
+.options_list {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 4px);
+    width: 100%;
+    border-radius: 8px;
+    animation: fade_in .15s;
+    background-color: #fff;
+}
+
+.select_option {
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 16px;
+    cursor: pointer;
+    border: 1px solid #F5F5F6;
+    border-bottom: none;
+}
+
+.select_option.selected_option {
+    color: var(--main-color);
+}
+
+.select_option.empty_option {
+    opacity: .5;
+    cursor: default;
+}
+
+.select_option:hover {
+    color: #fff;
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+.select_option.empty_option:hover {
+    color: #000;
+    background-color: #fff;
+    border-color: #F5F5F6;
+}
+
+.select_option:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.select_option:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom: 1px solid #F5F5F6;
+}
+
+.select_option:last-child:hover {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-color: var(--main-color);
+}
+
+.select_option.empty_option:last-child:hover {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-color: #F5F5F6;
+}
+
+@keyframes fade_in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
