@@ -48,31 +48,47 @@ interface ITripViewProps {
 }
 
 export const TripView = ({trip, stations, operators}: ITripViewProps) => {
-    let {from, to, departureTime, agent} = trip;
+    let {from, to, departureTime, agent, freeSeats, price, date} = trip;
 
     let fromStation = stations.find(station => station._id === from);
     let toStation = stations.find(station => station._id === to);
     let operator = operators.find(operator => operator._id === agent);
 
+    const moveToAgentSource = () => {
+        let url = null;
+        switch (operator?.name.toLowerCase()) {
+            case 'атлас':
+                url = new URL(`https://atlasbus.by/Маршруты/${fromStation?.name}/${toStation?.name}`);
+                let splittedDate = date.split('-');
+                url.searchParams.set('date', [splittedDate[2], splittedDate[1], splittedDate[0]].join('-'));
+                break;
+            case 'alfa bus':
+                url = new URL('https://alfa-bus.by/');
+                break;
+        }
+
+        console.log('url',url?.toString());
+    };
+
     return <div className={'trip_view'}>
-            <div className={'trip_view__route_info'}>
-                <div className={'trip_view__route_info_item'}>
-                    <div className={'title'}>Отправление</div>
-                    <div className={'time'}>{departureTime}</div>
-                    <div className={'station'}>{fromStation?.name}</div>
-                </div>
-                <div className={'trip_view__route_info_item'}>
-                    <div className={'title'}>Прибытие</div>
-                    <div className={'time'}/>
-                    <div className={'station'}>{toStation?.name}</div>
-                </div>
+        <div className={'trip_view__route_info'}>
+            <div className={'trip_view__route_info_item'}>
+                <div className={'title'}>Отправление</div>
+                <div className={'time'}>{departureTime}</div>
+                <div className={'station'}>{fromStation?.name}</div>
             </div>
-            <div className={'trip_view__buy_info'}>
-                <div className={'info_for_customer'}>
-                    <span className={'info_for_customer__cost'}>11 BYN</span>
-                    <span className={'info_for_customer__places'}>5+ мест</span>
-                </div>
-                <Button className={'link_button'} onClick={() => {}}>{operator?.name}</Button>
+            <div className={'trip_view__route_info_item'}>
+                <div className={'title'}>Прибытие</div>
+                <div className={'time'}/>
+                <div className={'station'}>{toStation?.name}</div>
             </div>
         </div>
+        <div className={'trip_view__buy_info'}>
+            <div className={'info_for_customer'}>
+                <span className={'info_for_customer__cost'}>{price} BYN</span>
+                <span className={'info_for_customer__places'}>{freeSeats} мест</span>
+            </div>
+            <Button className={'link_button'} onClick={moveToAgentSource}>{operator?.name}</Button>
+        </div>
+    </div>;
 };
