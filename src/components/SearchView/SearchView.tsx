@@ -78,30 +78,34 @@ const SearchView = () => {
     };
 
     return <>
-        <div className={'search_view'}>
-            <div className={'search_controls_container'}>
-                <div className={'search_inputs'}>
-                    <Select onSelect={onChangeFilter.bind(null, 'from')}
-                            options={stationsOptions}
-                            emptyMessage={'Не найдено подходящих городов'}
-                            className={'search_from_select'}
-                            initialValue={filters?.from}
-                            placeholder={'Откуда'}/>
-                    <div className={'swipe_routes_button_container'}>
-                        <SwipeRoutesButton disabled onClick={() => {
-                        }}/>
-                    </div>
-                    <Select onSelect={onChangeFilter.bind(null, 'to')} options={stationsOptions}
-                            initialValue={filters?.to}
-                            emptyMessage={'Не найдено подходящих городов'} placeholder={'Куда'}/>
-                    <DateInput placeholder={'Дата'} initialValue={filters?.date} className={'search_date_select'}
-                               onSelect={onChangeFilter.bind(null, 'date')}/>
+        <div className={'search_view_container'}>
+            <div className={'search_view'}>
+                <div className={'search_title'}>
+                    <h1>Маршрутки по Беларуси</h1>
+                    <span>Онлайн-сервис для поиска выгодных билетов</span>
                 </div>
-                <SearchButton disabled={isSearching} onClick={onSearchButtonClick}/>
+                <div className={'search_controls_container'}>
+                    <div className={'search_inputs'}>
+                        <Select onSelect={onChangeFilter.bind(null, 'from')}
+                                options={stationsOptions}
+                                emptyMessage={'Не найдено подходящих городов'}
+                                className={'search_from_select'}
+                                initialValue={filters?.from}
+                                placeholder={'Откуда'}/>
+                        {/*<div className={'swipe_routes_button_container'}>*/}
+                            {/*<SwipeRoutesButton disabled onClick={() => {*/}
+                            {/*}}/>*/}
+                        {/*</div>*/}
+                        <Select onSelect={onChangeFilter.bind(null, 'to')} options={stationsOptions}
+                                initialValue={filters?.to}
+                                emptyMessage={'Не найдено подходящих городов'} placeholder={'Куда'}/>
+                        <DateInput placeholder={'Дата'} initialValue={filters?.date} className={'search_date_select'}
+                                   onSelect={onChangeFilter.bind(null, 'date')}/>
+                    </div>
+                    <SearchButton disabled={isSearching} onClick={onSearchButtonClick}/>
+                </div>
             </div>
-            <div className={'search_button_container'}>
 
-            </div>
         </div>
         <TripsView trips={trips}/>
     </>;

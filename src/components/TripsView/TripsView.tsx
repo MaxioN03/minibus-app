@@ -8,7 +8,8 @@ export interface ITrip {
     from: string,
     to: string,
     date: string,
-    departureTime: string,
+    departure: string,
+    arrival?: string,
     freeSeats: number,
     price: number,
     agent: string,
@@ -33,7 +34,7 @@ const TripsView = ({trips}: ITripsViewProps) => {
     }, []);
     return <div className={'trips_view_container'}>
         <div className={'trips_view'}>
-            {trips.map(trip => <TripView key={`${trip.departureTime}_${trip.agent}`}
+            {trips.map(trip => <TripView key={`${trip.departure}_${trip.agent}`}
                                          stations={stations} operators={operators} trip={trip}/>)}
         </div>
     </div>;
@@ -48,7 +49,7 @@ interface ITripViewProps {
 }
 
 export const TripView = ({trip, stations, operators}: ITripViewProps) => {
-    let {from, to, departureTime, agent, freeSeats, price, date} = trip;
+    let {from, to, departure, agent, freeSeats, price, date, arrival} = trip;
 
     let fromStation = stations.find(station => station._id === from);
     let toStation = stations.find(station => station._id === to);
@@ -67,19 +68,27 @@ export const TripView = ({trip, stations, operators}: ITripViewProps) => {
                 break;
         }
 
-        console.log('url',url?.toString());
+        window.open(url?.toString() || '', '_blank')?.focus();
     };
 
     return <div className={'trip_view'}>
         <div className={'trip_view__route_info'}>
             <div className={'trip_view__route_info_item'}>
                 <div className={'title'}>Отправление</div>
-                <div className={'time'}>{departureTime}</div>
+                <div className={'time'}>{new Date(departure).toLocaleTimeString('ru-RU', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                })}</div>
                 <div className={'station'}>{fromStation?.name}</div>
             </div>
             <div className={'trip_view__route_info_item'}>
                 <div className={'title'}>Прибытие</div>
-                <div className={'time'}/>
+                <div className={'time'}>{arrival
+                    ? new Date(arrival).toLocaleTimeString('ru-RU', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                    })
+                    : '—'}</div>
                 <div className={'station'}>{toStation?.name}</div>
             </div>
         </div>

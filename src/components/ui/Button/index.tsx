@@ -24,7 +24,7 @@ export const Button = (props: React.PropsWithChildren<IButtonProps>) => {
     + ` ${secondColor ? 'second_color' : ''} ${className ?? ''}`}
                    onClick={onClick}>
         {icon
-            ? <div className={'icon'}/>
+            ? <div className={'icon'}>{icon}</div>
             : null}
         <span className={'button_title'}>{children ?? 'title'}</span>
     </button>;

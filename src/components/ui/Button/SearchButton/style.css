@@ -1,6 +1,9 @@
-.search_button {
+.search_button{
     border-radius: 8px;
     padding: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .search_button_icon {

@@ -1,5 +1,5 @@
 .trips_view_container {
-display: flex;
+    display: flex;
     justify-content: center;
 }
 
@@ -7,7 +7,7 @@ display: flex;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin: 2em 0;
+    margin: 2em auto;
 }
 
 .trip_view {
@@ -19,7 +19,7 @@ display: flex;
     font-weight: 600;
 }
 
-.trip_view .trip_view__route_info{
+.trip_view .trip_view__route_info {
     padding: 24px 32px;
 }
 
@@ -30,7 +30,6 @@ display: flex;
 .trip_view .trip_view__route_info {
     display: flex;
     gap: 16px;
-    min-width: 20em;
 }
 
 .trip_view .trip_view__route_info_item {
@@ -58,7 +57,6 @@ display: flex;
     font-size: 16px;
     line-height: 24px;
 }
-
 
 .trip_view .trip_view__buy_info {
     border-left: 1px dashed var(--separator-color);
@@ -100,6 +98,15 @@ display: flex;
     content: '';
     width: 16px;
     height: 16px;
+}
+
+@media screen and (max-width: 1080px) {
+    .trip_view {
+        border-radius: 4px;
+        flex-direction: column;
+        margin: 0 1em;
+        font-weight: 600;
+    }
 }
 
 

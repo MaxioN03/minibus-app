@@ -6,6 +6,7 @@
     border-radius: 8px;
     animation: fade_in .15s;
     background-color: #fff;
+    z-index: 1;
 }
 
 .select_option {
