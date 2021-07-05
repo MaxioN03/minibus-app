@@ -71,7 +71,7 @@
     .search_view {
         padding: 15px 25px;
         margin: 0;
-        width: 100%;
+        width: calc(100% - 50px);
         border-radius: 0;
     }
 

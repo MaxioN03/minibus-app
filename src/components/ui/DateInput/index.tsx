@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from 'react';
-import DatePicker, {CalendarContainer} from 'react-datepicker';
 import {subDays, addDays} from 'date-fns';
 import './index.css';
 import '../../../index.css';
@@ -19,30 +18,28 @@ interface IDateInputProps {
 export const DateInput = (props: IDateInputProps) => {
     let {placeholder, className, initialValue} = props;
     const [isFocused, setIsFocused] = useState<boolean>(false);
-    const [isPickerShow, setIsPickerShow] = useState<boolean>(false);
-    const [selectedValue, setSelectedValue] = useState<Date | null>(null);
+    // const [isPickerShow, setIsPickerShow] = useState<boolean>(false);
+    // const [selectedValue, setSelectedValue] = useState<Date | null>(null);
     const [inputValue, setInputValue] = useState<string>('');
     const dateInput = useRef<HTMLInputElement | null>(null);
     let ignoreBlur = false;
 
     useEffect(() => {
-        let splitted = initialValue?.split('-');
-
-        if (splitted) {
-            let value = [splitted[1], splitted[0], splitted[2]].join('-');
-            let date = new Date(value);
-            setSelectedValue(date);
-            setInputValue(date.toLocaleDateString('ru-RU'));
-        }
+        // let splitted = initialValue?.split('-');
+        //
+        // if (splitted) {
+        //     let value = [splitted[1], splitted[0], splitted[2]].join('-');
+        //     let date = new Date(value);
+        //     setInputValue(date.toLocaleDateString('ru-RU'));
+        // }
 
     }, [initialValue]);
 
     useEffect(() => {
-        setIsPickerShow(isFocused);
+        // setIsPickerShow(isFocused);
         if (isFocused) {
             let selectInputElement: any = dateInput?.current;
             selectInputElement?.focus();
-            selectInputElement.selectionStart = selectInputElement?.value.length;
         } else {
             dateInput.current?.blur();
         }
@@ -68,66 +65,25 @@ export const DateInput = (props: IDateInputProps) => {
         setIsFocused(true);
     };
 
-    const onClickHandler = (event: any) => {
-        let isOptionsListClick = false;
-        let classList = event.target.classList;
-        for (let i = 0; i < classList.length; i++) {
-            if (classList[i].includes('react-datepicker__day--keyboard-selected')) {
-                isOptionsListClick = true;
-            }
-        }
-
-        // if (!isOptionsListClick) {
-        //     handleFocus();
-        // }
+    const onClickHandler = () => {
+        handleFocus();
     };
 
-    const onInputChange = () => {
-        // let inputValue = event?.target?.value;
-        // let filteredOptions = inputValue
-        //     ? props.options.filter(option => {
-        //         let {value, text} = option;
-        //         return value?.toLowerCase().includes(inputValue?.toLowerCase())
-        //             || text?.toLowerCase().includes(inputValue?.toLowerCase());
-        //     })
-        //     : props.options;
-        // setFilteredOptions(filteredOptions);
-        // setSelectedValue(null);
-        // setInputValue(inputValue);
-    };
-
-    // const onSelect = (selectedValue: string) => {
-    //     // setSelectedValue(selectedValue);
-    //     // let selectedOption = props.options.find(option => option.value === selectedValue);
-    //     // let selectedOptionText = selectedOption?.text ?? '';
-    //
-    //     // setFilteredOptions(props.options);
-    // };
-
-    const onDateChange = (date: Date) => {
-        setInputValue(date.toLocaleDateString('ru-RU'));
+    const onInputChange = (event: any) => {
+        let inputValue = event?.target?.value;
+        let date = new Date(inputValue);
 
         let day = date.getDate();
         let month = date.getMonth() + 1;
-        let yearString = date.getFullYear();
 
+        let yearString = date.getFullYear();
         let dayString = day < 10 ? `0${day}` : day;
         let monthString = month < 10 ? `0${month}` : month;
 
-        let fullDateString = `${dayString}-${monthString}-${yearString}`;
+        // setSelectedValue(date);
 
-        props.onSelect(fullDateString);
-        handleBlur();
-    };
-
-    const MyContainer = ({className, children}: any) => {
-        return (
-            <div style={{border: '1px solid #F5F5F6', borderRadius: '8px'}}>
-                <CalendarContainer className={className}>
-                    <div style={{position: 'relative'}}>{children}</div>
-                </CalendarContainer>
-            </div>
-        );
+        setInputValue(inputValue);
+        props.onSelect(`${dayString}-${monthString}-${yearString}`);
     };
 
     return <div className={`select ${isFocused ? 'focused' : ''} ${className || ''}`}
@@ -139,17 +95,6 @@ export const DateInput = (props: IDateInputProps) => {
                 onMouseOut={clearIgnoreBlur}
                 onClick={onClickHandler}>
         <div className={'select_placeholder'}>{placeholder || 'Выберите'}</div>
-        <input value={inputValue} ref={dateInput} className={'select_input'} onChange={onInputChange}/>
-        {isPickerShow
-            ? <div className={'picker'}>
-                <DatePicker selected={selectedValue} dateFormat="dd/MM"
-                            locale="ru"
-                            onChange={onDateChange}
-                            minDate={new Date()}
-                            maxDate={addDays(new Date(), 14)}
-                            calendarContainer={MyContainer}
-                            inline/>
-            </div>
-            : null}
+        <input type={'date'} value={inputValue} ref={dateInput} className={'select_input'} onChange={onInputChange}/>
     </div>;
 };

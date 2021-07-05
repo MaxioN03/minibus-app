@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import './index.css';
 import {makeRequest} from '../../request/request';
 import {IOption, Select} from '../ui/Select';
-import {SwipeRoutesButton} from '../ui/Button/SwipeRoutesButton';
 import {SearchButton} from '../ui/Button/SearchButton';
 import {DateInput} from '../ui/DateInput';
 import {ITrip, default as TripsView} from "../TripsView/TripsView";
