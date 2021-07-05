@@ -17,26 +17,29 @@ interface IDateInputProps {
 
 export const DateInput = (props: IDateInputProps) => {
     let {placeholder, className, initialValue} = props;
-    const [isFocused, setIsFocused] = useState<boolean>(false);
-    // const [isPickerShow, setIsPickerShow] = useState<boolean>(false);
-    // const [selectedValue, setSelectedValue] = useState<Date | null>(null);
-    const [inputValue, setInputValue] = useState<string>('');
     const dateInput = useRef<HTMLInputElement | null>(null);
     let ignoreBlur = false;
 
-    useEffect(() => {
-        // let splitted = initialValue?.split('-');
-        //
-        // if (splitted) {
-        //     let value = [splitted[1], splitted[0], splitted[2]].join('-');
-        //     let date = new Date(value);
-        //     setInputValue(date.toLocaleDateString('ru-RU'));
-        // }
+    const [isFocused, setIsFocused] = useState<boolean>(false);
+    const [inputValue, setInputValue] = useState<string>(''); //yyyy-mm-dd
 
+    useEffect(() => {
+        if (!isNaN(Date.parse(initialValue || ''))) {
+            let date = new Date(formatDateFromRuToEn(initialValue || ''));
+
+            let day = date.getDate();
+            let month = date.getMonth() + 1;
+
+            let yearString = date.getFullYear();
+            let dayString = day < 10 ? `0${day}` : day;
+            let monthString = month < 10 ? `0${month}` : month;
+
+            setInputValue(`${yearString}-${monthString}-${dayString}`);
+            props.onSelect(initialValue || '');
+        }
     }, [initialValue]);
 
     useEffect(() => {
-        // setIsPickerShow(isFocused);
         if (isFocused) {
             let selectInputElement: any = dateInput?.current;
             selectInputElement?.focus();
@@ -80,8 +83,6 @@ export const DateInput = (props: IDateInputProps) => {
         let dayString = day < 10 ? `0${day}` : day;
         let monthString = month < 10 ? `0${month}` : month;
 
-        // setSelectedValue(date);
-
         setInputValue(inputValue);
         props.onSelect(`${dayString}-${monthString}-${yearString}`);
     };
@@ -97,4 +98,9 @@ export const DateInput = (props: IDateInputProps) => {
         <div className={'select_placeholder'}>{placeholder || 'Выберите'}</div>
         <input type={'date'} value={inputValue} ref={dateInput} className={'select_input'} onChange={onInputChange}/>
     </div>;
+};
+
+const formatDateFromRuToEn = (date: string) => {
+    let [day, month, year] = date.split('-');
+    return [year, month, day].join('-');
 };

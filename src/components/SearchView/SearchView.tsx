@@ -7,6 +7,14 @@ import {DateInput} from '../ui/DateInput';
 import {ITrip, default as TripsView} from "../TripsView/TripsView";
 import {useLocation, useHistory} from 'react-router-dom';
 
+interface IFilters {
+    [key: string]: string,
+
+    from: string,
+    to: string,
+    date: string, //dd-mm-yyyy
+}
+
 export interface IStation {
     _id: string,
     name: string,
@@ -24,7 +32,7 @@ const SearchView = () => {
     const [isSearching, setIsSearching] = useState<boolean>(false);
     const [trips, setTrips] = useState<ITrip[]>([]);
     const [stationsOptions, setStationsOptions] = useState<IOption[]>([]);
-    const [filters, setFilters] = useState<{ [key: string]: any } | null>({});
+    const [filters, setFilters] = useState<IFilters | null>(null);
     const location = useLocation();
     const history = useHistory();
 
@@ -38,7 +46,7 @@ const SearchView = () => {
     }, []);
 
     useEffect(() => {
-        let newFilters = Object.assign({}, filters);
+        let newFilters: any = {};
 
         let searchParams = new URLSearchParams(location.search);
         ['from', 'to', 'date'].forEach(cgiFilterKey => {
@@ -51,7 +59,7 @@ const SearchView = () => {
         setFilters(newFilters);
     }, [location]);
 
-    const onSearchButtonClick = () => {
+    const onSearchTrips = () => {
         setIsSearching(true);
 
         makeRequest('trips', {
@@ -67,13 +75,18 @@ const SearchView = () => {
             });
     };
 
-    useEffect(() => {
-    }, [isSearching]);
-
     const onChangeFilter = (type: string, value: any) => {
         let searchParams = new URLSearchParams(location.search);
-        searchParams.set(type, value);
+        if (value !== null) {
+            searchParams.set(type, value);
+        } else {
+            searchParams.delete(type);
+        }
         history.push(`${location.pathname}?${searchParams}`);
+    };
+
+    const isMainFiltersExist = () => {
+        return !!filters?.from && !!filters?.to && !!filters?.date;
     };
 
     return <>
@@ -92,8 +105,8 @@ const SearchView = () => {
                                 initialValue={filters?.from}
                                 placeholder={'Откуда'}/>
                         {/*<div className={'swipe_routes_button_container'}>*/}
-                            {/*<SwipeRoutesButton disabled onClick={() => {*/}
-                            {/*}}/>*/}
+                        {/*<SwipeRoutesButton disabled onClick={() => {*/}
+                        {/*}}/>*/}
                         {/*</div>*/}
                         <Select onSelect={onChangeFilter.bind(null, 'to')} options={stationsOptions}
                                 initialValue={filters?.to}
@@ -101,10 +114,9 @@ const SearchView = () => {
                         <DateInput placeholder={'Дата'} initialValue={filters?.date} className={'search_date_select'}
                                    onSelect={onChangeFilter.bind(null, 'date')}/>
                     </div>
-                    <SearchButton disabled={isSearching} onClick={onSearchButtonClick}/>
+                    <SearchButton disabled={isSearching || !isMainFiltersExist()} onClick={onSearchTrips}/>
                 </div>
             </div>
-
         </div>
         <TripsView trips={trips}/>
     </>;

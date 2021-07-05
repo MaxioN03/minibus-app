@@ -13,7 +13,7 @@ interface ISelectProps {
     options: IOption[],
     emptyMessage?: string,
     className?: string,
-    onSelect: (value: string) => void,
+    onSelect: (value: string | null) => void,
     initialValue?: string
 }
 
@@ -97,6 +97,7 @@ export const Select = (props: ISelectProps) => {
         setFilteredOptions(filteredOptions);
         setSelectedValue(null);
         setInputValue(inputValue);
+        props.onSelect(null);
     };
 
     const onSelect = (selectedValue: string) => {
