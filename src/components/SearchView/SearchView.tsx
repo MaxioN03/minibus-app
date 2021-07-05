@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './index.css';
-import { Button } from '../ui/Button';
-import { makeRequest } from '../../request/request';
-import { IOption, Select } from '../ui/Select';
-import { SwipeRoutesButton } from '../ui/Button/SwipeRoutesButton';
-import { SearchButton } from '../ui/Button/SearchButton';
-import { DateInput } from '../ui/DateInput';
+import {makeRequest} from '../../request/request';
+import {IOption, Select} from '../ui/Select';
+import {SwipeRoutesButton} from '../ui/Button/SwipeRoutesButton';
+import {SearchButton} from '../ui/Button/SearchButton';
+import {DateInput} from '../ui/DateInput';
+import {ITrip, default as TripsView} from "../TripsView/TripsView";
 
-interface IStation {
+export interface IStation {
     _id: string,
     name: string,
     operatorsKeys: {
@@ -15,9 +15,14 @@ interface IStation {
     }
 }
 
+export interface IOperator {
+    _id: string,
+    name: string
+}
+
 const SearchView = () => {
     const [isSearching, setIsSearching] = useState<boolean>(false);
-    // const [stations, setStations] = useState<IStation[]>([]);
+    const [trips, setTrips] = useState<ITrip[]>([]);
     const [stationsOptions, setStationsOptions] = useState<IOption[]>([]);
     const [filters, setFilters] = useState<{ [key: string]: any } | null>({});
 
@@ -33,14 +38,17 @@ const SearchView = () => {
     const onSearchButtonClick = () => {
         setIsSearching(true);
 
-        console.log('JSON.stringify(filters)', JSON.stringify(filters));
-
         makeRequest('trips', {
             method: 'POST',
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(filters)
-        }).then(response => {
-            console.log('response', response);
         })
+            .finally(() => {
+                setIsSearching(false);
+            })
+            .then(trips => {
+                setTrips(trips);
+            });
     };
 
     useEffect(() => {
@@ -52,26 +60,30 @@ const SearchView = () => {
         setFilters(newFilters);
     };
 
-    return <div className={'search_view'}>
-        <div className={'search_controls_container'}>
-            <div className={'search_inputs'}>
-                <Select onSelect={onChangeFilter.bind(null, 'from')} options={stationsOptions}
-                        emptyMessage={'Не найдено подходящих городов'}
-                        placeholder={'Откуда'}/>
-                <div className={'swipe_routes_button_container'}>
-                    <SwipeRoutesButton disabled onClick={() => {
-                    }}/>
+    return <>
+        <div className={'search_view'}>
+            <div className={'search_controls_container'}>
+                <div className={'search_inputs'}>
+                    <Select onSelect={onChangeFilter.bind(null, 'from')} options={stationsOptions}
+                            emptyMessage={'Не найдено подходящих городов'}
+                            className={'search_from_select'}
+                            placeholder={'Откуда'}/>
+                    <div className={'swipe_routes_button_container'}>
+                        <SwipeRoutesButton disabled onClick={() => {
+                        }}/>
+                    </div>
+                    <Select onSelect={onChangeFilter.bind(null, 'to')} options={stationsOptions}
+                            emptyMessage={'Не найдено подходящих городов'} placeholder={'Куда'}/>
+                    <DateInput className={'search_date_select'} onSelect={onChangeFilter.bind(null, 'date')}/>
                 </div>
-                <Select onSelect={onChangeFilter.bind(null, 'to')} options={stationsOptions}
-                        emptyMessage={'Не найдено подходящих городов'} placeholder={'Куда'}/>
-                <DateInput onSelect={onChangeFilter.bind(null, 'date')}/>
+                <SearchButton disabled={isSearching} onClick={onSearchButtonClick}/>
             </div>
-            <SearchButton disabled={isSearching} onClick={onSearchButtonClick}/>
-        </div>
-        <div className={'search_button_container'}>
+            <div className={'search_button_container'}>
 
+            </div>
         </div>
-    </div>;
+        <TripsView trips={trips}/>
+    </>;
 };
 
 export default SearchView;

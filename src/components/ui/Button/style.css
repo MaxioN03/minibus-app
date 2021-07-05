@@ -7,7 +7,7 @@
     transition: all var(--ui-transition-time);
     background-color: var(--main-color);
     border-radius: 8px;
-    padding: 20px 24px;
+    padding: 20px;
     border: none;
 }
 
@@ -50,14 +50,11 @@
     background-color: var(--main-color-disabled);
 }
 
-
-
-
 /* Secondary */
 .secondary {
     background-color: var(--main-color-secondary);
     color: var(--main-color);
-    padding: 12px 24px;
+    padding: 12px;
 }
 
 .secondary .icon {

@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import DatePicker, { CalendarContainer } from 'react-datepicker';
 import { subDays, addDays } from 'date-fns';
 import './index.css';
@@ -6,7 +6,6 @@ import '../../../index.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import { registerLocale } from 'react-datepicker';
 import ru from 'date-fns/locale/ru';
-import { OptionsList } from '../Select/OptionsList';
 
 registerLocale('ru', ru);
 
@@ -15,14 +14,10 @@ export const DateInput = (props: any) => {
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const [isPickerShow, setIsPickerShow] = useState<boolean>(false);
     // const [filteredOptions, setFilteredOptions] = useState<IOption[]>([]);
-    const [selectedValue, setSelectedValue] = useState<any>(null);
+    // const [selectedValue, setSelectedValue] = useState<any>(null);
     const [inputValue, setInputValue] = useState<string>('');
     const dateInput = useRef<HTMLInputElement | null>(null);
     let ignoreBlur = false;
-
-    // useEffect(() => {
-    //     setFilteredOptions(options);
-    // }, [options]);
 
     useEffect(() => {
         setIsPickerShow(isFocused);
@@ -37,12 +32,10 @@ export const DateInput = (props: any) => {
 
     const setIgnoreBlur = () => {
         ignoreBlur = true;
-        console.log('setIgnoreBlur');
     };
 
     const clearIgnoreBlur = () => {
         ignoreBlur = false;
-        console.log('clearIgnoreBlur');
     };
 
     const handleBlur = () => {
@@ -58,8 +51,6 @@ export const DateInput = (props: any) => {
     };
 
     const onClickHandler = (event: any) => {
-        console.log('onClickHandler');
-
         let isOptionsListClick = false;
         let classList = event.target.classList;
         for (let i = 0; i < classList.length; i++) {
@@ -73,7 +64,7 @@ export const DateInput = (props: any) => {
         // }
     };
 
-    const onInputChange = (event: any) => {
+    const onInputChange = () => {
         // let inputValue = event?.target?.value;
         // let filteredOptions = inputValue
         //     ? props.options.filter(option => {
@@ -87,13 +78,13 @@ export const DateInput = (props: any) => {
         // setInputValue(inputValue);
     };
 
-    const onSelect = (selectedValue: string) => {
-        // setSelectedValue(selectedValue);
-        // let selectedOption = props.options.find(option => option.value === selectedValue);
-        // let selectedOptionText = selectedOption?.text ?? '';
-
-        // setFilteredOptions(props.options);
-    };
+    // const onSelect = (selectedValue: string) => {
+    //     // setSelectedValue(selectedValue);
+    //     // let selectedOption = props.options.find(option => option.value === selectedValue);
+    //     // let selectedOptionText = selectedOption?.text ?? '';
+    //
+    //     // setFilteredOptions(props.options);
+    // };
 
     const onDateChange = (date: Date) => {
         setInputValue(date.toLocaleDateString('ru-RU'));
@@ -105,7 +96,7 @@ export const DateInput = (props: any) => {
         let dayString = day < 10 ? `0${day}` : day;
         let monthString = month < 10 ? `0${month}` : month;
 
-        let fullDateString = `${dayString}.${monthString}.${yearString}`;
+        let fullDateString = `${dayString}-${monthString}-${yearString}`;
 
         props.onSelect(fullDateString);
         handleBlur();

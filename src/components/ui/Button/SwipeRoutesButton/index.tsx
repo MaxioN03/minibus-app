@@ -10,7 +10,7 @@ interface IButtonProps {
 export const SwipeRoutesButton = (props: React.PropsWithChildren<IButtonProps>) => {
     const {onClick: onClickProps, disabled} = props;
 
-    return <Button className={'swipe_routes_button'} onClick={onClickProps} type={'secondary'} disabled={disabled}>
+    return <Button className={'swipe_routes_button'} onClick={onClickProps} secondary disabled={disabled}>
         <div className={'swipe_routes_button_icon'}/>
     </Button>;
 };

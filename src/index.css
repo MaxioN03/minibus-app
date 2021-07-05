@@ -14,8 +14,14 @@
     --second-color-disabled: #DCDDF6;
 
     --color-font: #181839;
+    --secondary-font-color: #bbbbd9;
+    --separator-color: #e2e2ef;
 
     --ui-transition-time: .1s;
     --ui-disabled-background-color: #e0e0e0;
     --ui-disabled-color: #a5a5a5;
+
+    --background-color: #F5F5F6;
+    --main-border-radius: 8px;
+
 }
