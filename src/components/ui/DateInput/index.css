@@ -68,7 +68,7 @@
     margin-bottom: 16px;
 }
 
-.react-datepicker__day--keyboard-selected {
+.react-datepicker__day--keyboard-selected, .react-datepicker__day--selected {
     background: #E45D46 !important;
     border-radius: 8px !important;
 }

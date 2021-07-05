@@ -1,23 +1,41 @@
-import React, { useEffect, useRef, useState } from 'react';
-import DatePicker, { CalendarContainer } from 'react-datepicker';
-import { subDays, addDays } from 'date-fns';
+import React, {useEffect, useRef, useState} from 'react';
+import DatePicker, {CalendarContainer} from 'react-datepicker';
+import {subDays, addDays} from 'date-fns';
 import './index.css';
 import '../../../index.css';
 import 'react-datepicker/dist/react-datepicker.css';
-import { registerLocale } from 'react-datepicker';
+import {registerLocale} from 'react-datepicker';
 import ru from 'date-fns/locale/ru';
 
 registerLocale('ru', ru);
 
-export const DateInput = (props: any) => {
-    let {placeholder, className} = props;
+interface IDateInputProps {
+    placeholder: string,
+    className?: string,
+    onSelect: (value: string) => void
+    initialValue?: string
+}
+
+export const DateInput = (props: IDateInputProps) => {
+    let {placeholder, className, initialValue} = props;
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const [isPickerShow, setIsPickerShow] = useState<boolean>(false);
-    // const [filteredOptions, setFilteredOptions] = useState<IOption[]>([]);
-    // const [selectedValue, setSelectedValue] = useState<any>(null);
+    const [selectedValue, setSelectedValue] = useState<Date | null>(null);
     const [inputValue, setInputValue] = useState<string>('');
     const dateInput = useRef<HTMLInputElement | null>(null);
     let ignoreBlur = false;
+
+    useEffect(() => {
+        let splitted = initialValue?.split('-');
+
+        if (splitted) {
+            let value = [splitted[1], splitted[0], splitted[2]].join('-');
+            let date = new Date(value);
+            setSelectedValue(date);
+            setInputValue(date.toLocaleDateString('ru-RU'));
+        }
+
+    }, [initialValue]);
 
     useEffect(() => {
         setIsPickerShow(isFocused);
@@ -112,7 +130,7 @@ export const DateInput = (props: any) => {
         );
     };
 
-    return <div className={`select ${isFocused ? 'focused' : ''} ${className ?? ''}`}
+    return <div className={`select ${isFocused ? 'focused' : ''} ${className || ''}`}
                 tabIndex={0}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
@@ -120,11 +138,11 @@ export const DateInput = (props: any) => {
                 onMouseUp={clearIgnoreBlur}
                 onMouseOut={clearIgnoreBlur}
                 onClick={onClickHandler}>
-        <div className={'select_placeholder'}>{placeholder ?? 'Выберите'}</div>
+        <div className={'select_placeholder'}>{placeholder || 'Выберите'}</div>
         <input value={inputValue} ref={dateInput} className={'select_input'} onChange={onInputChange}/>
         {isPickerShow
             ? <div className={'picker'}>
-                <DatePicker dateFormat="dd/MM"
+                <DatePicker selected={selectedValue} dateFormat="dd/MM"
                             locale="ru"
                             onChange={onDateChange}
                             minDate={new Date()}

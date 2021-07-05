@@ -6,6 +6,7 @@ import {SwipeRoutesButton} from '../ui/Button/SwipeRoutesButton';
 import {SearchButton} from '../ui/Button/SearchButton';
 import {DateInput} from '../ui/DateInput';
 import {ITrip, default as TripsView} from "../TripsView/TripsView";
+import {useLocation, useHistory} from 'react-router-dom';
 
 export interface IStation {
     _id: string,
@@ -25,6 +26,8 @@ const SearchView = () => {
     const [trips, setTrips] = useState<ITrip[]>([]);
     const [stationsOptions, setStationsOptions] = useState<IOption[]>([]);
     const [filters, setFilters] = useState<{ [key: string]: any } | null>({});
+    const location = useLocation();
+    const history = useHistory();
 
     useEffect(() => {
         makeRequest('stations').then(stations => {
@@ -34,6 +37,20 @@ const SearchView = () => {
             setStationsOptions(stationsOptions);
         });
     }, []);
+
+    useEffect(() => {
+        let newFilters = Object.assign({}, filters);
+
+        let searchParams = new URLSearchParams(location.search);
+        ['from', 'to', 'date'].forEach(cgiFilterKey => {
+            let value = searchParams.get(cgiFilterKey);
+            if (value) {
+                newFilters[cgiFilterKey] = value;
+            }
+        });
+
+        setFilters(newFilters);
+    }, [location]);
 
     const onSearchButtonClick = () => {
         setIsSearching(true);
@@ -55,26 +72,30 @@ const SearchView = () => {
     }, [isSearching]);
 
     const onChangeFilter = (type: string, value: any) => {
-        let newFilters = Object.assign({}, filters);
-        newFilters[type] = value;
-        setFilters(newFilters);
+        let searchParams = new URLSearchParams(location.search);
+        searchParams.set(type, value);
+        history.push(`${location.pathname}?${searchParams}`);
     };
 
     return <>
         <div className={'search_view'}>
             <div className={'search_controls_container'}>
                 <div className={'search_inputs'}>
-                    <Select onSelect={onChangeFilter.bind(null, 'from')} options={stationsOptions}
+                    <Select onSelect={onChangeFilter.bind(null, 'from')}
+                            options={stationsOptions}
                             emptyMessage={'Не найдено подходящих городов'}
                             className={'search_from_select'}
+                            initialValue={filters?.from}
                             placeholder={'Откуда'}/>
                     <div className={'swipe_routes_button_container'}>
                         <SwipeRoutesButton disabled onClick={() => {
                         }}/>
                     </div>
                     <Select onSelect={onChangeFilter.bind(null, 'to')} options={stationsOptions}
+                            initialValue={filters?.to}
                             emptyMessage={'Не найдено подходящих городов'} placeholder={'Куда'}/>
-                    <DateInput className={'search_date_select'} onSelect={onChangeFilter.bind(null, 'date')}/>
+                    <DateInput placeholder={'Дата'} initialValue={filters?.date} className={'search_date_select'}
+                               onSelect={onChangeFilter.bind(null, 'date')}/>
                 </div>
                 <SearchButton disabled={isSearching} onClick={onSearchButtonClick}/>
             </div>

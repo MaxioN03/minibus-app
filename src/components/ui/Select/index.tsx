@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './index.css';
 import '../../../index.css';
-import { OptionsList } from './OptionsList';
+import {OptionsList} from './OptionsList';
 
 export interface IOption {
     value: string,
@@ -13,11 +13,12 @@ interface ISelectProps {
     options: IOption[],
     emptyMessage?: string,
     className?: string,
-    onSelect: (value: string) => void
+    onSelect: (value: string) => void,
+    initialValue?: string
 }
 
 export const Select = (props: ISelectProps) => {
-    let {placeholder, options, emptyMessage, className} = props;
+    let {placeholder, options, emptyMessage, className, initialValue} = props;
     const [isOptionsListShow, setIsOptionsListShow] = useState<boolean>(false);
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const [filteredOptions, setFilteredOptions] = useState<IOption[]>([]);
@@ -29,6 +30,14 @@ export const Select = (props: ISelectProps) => {
     useEffect(() => {
         setFilteredOptions(options);
     }, [options]);
+
+    useEffect(() => {
+        let selectedOptions = options.find(option => option.value === initialValue);
+        if (selectedOptions) {
+            setSelectedValue(initialValue || null);
+            setInputValue(selectedOptions.text)
+        }
+    }, [options, initialValue]);
 
     useEffect(() => {
         setIsOptionsListShow(isFocused);
