@@ -13,6 +13,7 @@
     border-radius: 32px;
     margin: 40px;
     gap: 40px;
+    max-width: 900px;
 }
 
 .search_view .search_title {

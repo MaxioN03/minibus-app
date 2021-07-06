@@ -2,14 +2,19 @@ footer {
     box-sizing: border-box;
     width: 100%;
     padding: 2em;
-    color: var(--ui-disabled-background-color);
+    background-color: var(--background-color);
+    color: var(--color-font);
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    justify-content: space-between;
+    max-width: 900px;
+    margin: 2em auto;
+    border-radius: 32px;
 }
 
 @media screen and (max-width: 1080px) {
     footer {
         padding: 15px 15px 30px 15px;
+        border-radius: 0;
+        width: 100%;
     }
 }
