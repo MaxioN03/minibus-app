@@ -6,7 +6,7 @@
     gap: 4px;
     font-family: 'Open Sans', sans-serif;
     position: relative;
-    min-width: 250px;
+    min-width: 200px;
     height: 66px;
     box-sizing: border-box;
 }
@@ -34,7 +34,8 @@
     width: 100%;
 }
 
-
 @media screen and (max-width: 1080px) {
-
+    .select {
+        min-width: 0;
+    }
 }

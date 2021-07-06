@@ -34,7 +34,6 @@ const TripsView = ({trips}: ITripsViewProps) => {
     }, []);
 
     const firstTrip = trips?.[0];
-    console.log('firstTrip', firstTrip);
     let fromStation = stations.find(station => station._id === firstTrip?.from);
     let toStation = stations.find(station => station._id === firstTrip?.to);
     let departure = new Date(firstTrip.departure);

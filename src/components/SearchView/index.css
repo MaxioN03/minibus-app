@@ -56,7 +56,7 @@
     border-radius: 8px 0 0 8px;
 }
 
-.search_controls_container .search_inputs .search_date_select {
+.search_controls_container .search_inputs .search_passengers_select {
     border-radius: 0 8px 8px 0;
 }
 
@@ -74,6 +74,7 @@
         margin: 0;
         width: calc(100% - 50px);
         border-radius: 0;
+        max-width: inherit;
     }
 
     .search_view .search_title h1 {
@@ -96,7 +97,7 @@
         border-radius: 8px 8px 0 0;
     }
 
-    .search_controls_container .search_inputs .search_date_select {
+    .search_controls_container .search_inputs .search_passengers_select {
         border-radius: 0 0 8px 8px;
     }
 }

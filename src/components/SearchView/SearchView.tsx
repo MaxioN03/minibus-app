@@ -7,13 +7,15 @@ import {DateInput} from '../ui/DateInput';
 import {ITrip, default as TripsView} from "../TripsView/TripsView";
 import {useLocation, useHistory} from 'react-router-dom';
 import {Spin} from "../ui/Spin";
+import {CountPicker} from "../ui/CountPicker";
 
 interface IFilters {
-    [key: string]: string,
+    [key: string]: string | number,
 
     from: string,
     to: string,
     date: string, //dd-mm-yyyy
+    passengers: number,
 }
 
 export interface IStation {
@@ -50,7 +52,7 @@ const SearchView = () => {
         let newFilters: any = {};
 
         let searchParams = new URLSearchParams(location.search);
-        ['from', 'to', 'date'].forEach(cgiFilterKey => {
+        ['from', 'to', 'date', 'passengers'].forEach(cgiFilterKey => {
             let value = searchParams.get(cgiFilterKey);
             if (value) {
                 newFilters[cgiFilterKey] = value;
@@ -112,8 +114,11 @@ const SearchView = () => {
                         <Select onSelect={onChangeFilter.bind(null, 'to')} options={stationsOptions}
                                 initialValue={filters?.to}
                                 emptyMessage={'Не найдено подходящих городов'} placeholder={'Куда'}/>
-                        <DateInput placeholder={'Дата'} initialValue={filters?.date} className={'search_date_select'}
+                        <DateInput placeholder={'Дата'} initialValue={filters?.date}
                                    onSelect={onChangeFilter.bind(null, 'date')}/>
+                        <CountPicker placeholder={'Пассажиры'}
+                                     onChange={onChangeFilter.bind(null, 'passengers')}
+                                     className={'search_passengers_select'}/>
                     </div>
                     <SearchButton disabled={isSearching || !isMainFiltersExist()} onClick={onSearchTrips}/>
                 </div>
