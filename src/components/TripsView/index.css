@@ -1,5 +1,6 @@
 .trips_view_container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
 }
 
@@ -8,6 +9,11 @@
     flex-direction: column;
     gap: 8px;
     margin: 2em auto;
+}
+
+.direction-title {
+    display: none;
+    color: var(--color-font)
 }
 
 .trip_view {
@@ -56,6 +62,7 @@
     color: var(--second-color);
     font-size: 16px;
     line-height: 24px;
+    height: 24px;
 }
 
 .trip_view .trip_view__buy_info {
@@ -95,17 +102,93 @@
     top: 8px;
     right: 8px;
     background-image: url('../../images/external_link_arrow.svg');
+    background-size: contain;
     content: '';
     width: 16px;
     height: 16px;
 }
 
 @media screen and (max-width: 1080px) {
+
+    .trips_view {
+        margin: 0 15px;
+        width: calc(100% - 30px);
+    }
+
+    .direction-title {
+        display: block;
+        margin: 15px;
+        width: calc(100% - 30px);
+    }
+
     .trip_view {
         border-radius: 4px;
         flex-direction: column;
-        margin: 0 1em;
+        margin: 0;
         font-weight: 600;
+    }
+
+    .trip_view .trip_view__route_info {
+        padding: 15px;
+    }
+
+    .trip_view .trip_view__buy_info {
+        padding: 15px;
+    }
+
+    .trip_view .trip_view__route_info {
+        gap: 48px;
+    }
+
+    .trip_view .trip_view__route_info_item .title {
+        display: none;
+    }
+
+    .trip_view .trip_view__route_info_item .time {
+        font-size: 18px;
+        line-height: 24px;
+        height: 24px;
+    }
+
+    .trip_view .trip_view__route_info_item .station {
+        font-size: 14px;
+        line-height: 16px;
+        height: 16px;
+    }
+
+    .trip_view .trip_view__buy_info {
+        border: none;
+        border-top: 1px dashed var(--separator-color);
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .trip_view .trip_view__buy_info .info_for_customer {
+        flex-direction: column;
+        justify-content: center;
+        gap: 0;
+        align-items: flex-start;
+    }
+
+    .info_for_customer__cost {
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    .info_for_customer__places {
+        color: var(--secondary-font-color);
+        font-size: 12px;
+        line-height: 16px;
+    }
+
+    .trip_view .trip_view__buy_info .link_button {
+        padding: 12px 24px;
+        flex: .5;
+    }
+
+    .trip_view .trip_view__buy_info .link_button:after {
+        width: 12px;
+        height: 12px;
     }
 }
 

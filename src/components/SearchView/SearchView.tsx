@@ -6,6 +6,7 @@ import {SearchButton} from '../ui/Button/SearchButton';
 import {DateInput} from '../ui/DateInput';
 import {ITrip, default as TripsView} from "../TripsView/TripsView";
 import {useLocation, useHistory} from 'react-router-dom';
+import {Spin} from "../ui/Spin";
 
 interface IFilters {
     [key: string]: string,
@@ -30,7 +31,7 @@ export interface IOperator {
 
 const SearchView = () => {
     const [isSearching, setIsSearching] = useState<boolean>(false);
-    const [trips, setTrips] = useState<ITrip[]>([]);
+    const [trips, setTrips] = useState<ITrip[] | null>(null);
     const [stationsOptions, setStationsOptions] = useState<IOption[]>([]);
     const [filters, setFilters] = useState<IFilters | null>(null);
     const location = useLocation();
@@ -118,7 +119,12 @@ const SearchView = () => {
                 </div>
             </div>
         </div>
-        <TripsView trips={trips}/>
+        {isSearching
+            ? <Spin/>
+            : trips
+                ? <TripsView trips={trips}/>
+                : null}
+
     </>;
 };
 

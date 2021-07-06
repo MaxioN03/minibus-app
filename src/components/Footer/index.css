@@ -1,0 +1,15 @@
+footer {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 2em;
+    color: var(--ui-disabled-background-color);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+@media screen and (max-width: 1080px) {
+    footer {
+        padding: 15px 15px 30px 15px;
+    }
+}
