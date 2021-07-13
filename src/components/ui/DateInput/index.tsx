@@ -8,6 +8,8 @@ import ru from 'date-fns/locale/ru';
 
 registerLocale('ru', ru);
 
+export const MAX_VISIBILITY_DAYS = 14;
+
 interface IDateInputProps {
     placeholder: string,
     className?: string,
@@ -22,6 +24,11 @@ export const DateInput = (props: IDateInputProps) => {
 
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>(''); //yyyy-mm-dd
+
+    const minDate = formatDateFromDateToEnString(new Date());
+    const tmpDateForMaxDate = new Date(new Date().setHours(0, 0, 0, 0));
+    const maxDateObject = new Date(tmpDateForMaxDate.setDate(tmpDateForMaxDate.getDate() + MAX_VISIBILITY_DAYS - 1));
+    const maxDate = formatDateFromDateToEnString(maxDateObject);
 
     useEffect(() => {
         if (!isNaN(Date.parse(initialValue || ''))) {
@@ -96,11 +103,27 @@ export const DateInput = (props: IDateInputProps) => {
                 onMouseOut={clearIgnoreBlur}
                 onClick={onClickHandler}>
         <div className={'select_placeholder'}>{placeholder || 'Выберите'}</div>
-        <input type={'date'} value={inputValue} ref={dateInput} className={'select_input'} onChange={onInputChange}/>
+        <input type={'date'} value={inputValue} min={minDate} max={maxDate} ref={dateInput} className={'select_input'}
+               onChange={onInputChange}/>
     </div>;
 };
 
 const formatDateFromRuToEn = (date: string) => {
     let [day, month, year] = date.split('-');
+    return [year, month, day].join('-');
+};
+
+
+const formatDateFromDateToEnString = (date: Date) => {
+    let dateObject = new Date(date);
+    let month = '' + (dateObject.getMonth() + 1);
+    let day = '' + dateObject.getDate();
+    let year = dateObject.getFullYear();
+
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+
     return [year, month, day].join('-');
 };

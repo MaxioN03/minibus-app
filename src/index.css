@@ -25,3 +25,12 @@
     --main-border-radius: 8px;
 
 }
+
+.link {
+    color: inherit;
+}
+
+.interactive_line {
+    cursor: pointer;
+    text-decoration: underline;
+}

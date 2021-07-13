@@ -66,6 +66,6 @@ export const CountPicker = (props: ICountPickerProps) => {
                 onMouseUp={clearIgnoreBlur}
                 onMouseOut={clearIgnoreBlur}>
         <div className={'select_placeholder'}>{placeholder || 'Количество'}</div>
-        <input type={'number'} pattern="\d*" value={inputValue} ref={countPickerInput} className={'select_input'} onChange={onInputChange}/>
+        <input type={'number'} pattern="\d*" min={1} value={inputValue} ref={countPickerInput} className={'select_input'} onChange={onInputChange}/>
     </div>;
 };

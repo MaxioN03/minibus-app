@@ -8,6 +8,7 @@ import {ITrip, default as TripsView} from "../TripsView/TripsView";
 import {useLocation, useHistory} from 'react-router-dom';
 import {Spin} from "../ui/Spin";
 import {CountPicker} from "../ui/CountPicker";
+import ErrorViewFailedRequest from "../ErrorViewFailedRequest";
 
 interface IFilters {
     [key: string]: string | number,
@@ -34,6 +35,7 @@ export interface IOperator {
 const SearchView = () => {
     const [isSearching, setIsSearching] = useState<boolean>(false);
     const [trips, setTrips] = useState<ITrip[] | null>(null);
+    const [error, setError] = useState<any>(null);
     const [stationsOptions, setStationsOptions] = useState<IOption[]>([]);
     const [filters, setFilters] = useState<IFilters | null>(null);
     const location = useLocation();
@@ -65,16 +67,15 @@ const SearchView = () => {
     const onSearchTrips = () => {
         setIsSearching(true);
 
-        makeRequest('trips', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(filters)
-        })
+        makeRequest(`trips?from=${filters?.from}&to=${filters?.to}&date=${filters?.date}`)
             .finally(() => {
                 setIsSearching(false);
             })
             .then(trips => {
                 setTrips(trips);
+            })
+            .catch(error => {
+                setError(error);
             });
     };
 
@@ -126,9 +127,11 @@ const SearchView = () => {
         </div>
         {isSearching
             ? <Spin/>
-            : trips
-                ? <TripsView trips={trips}/>
-                : null}
+            : error
+                ? <ErrorViewFailedRequest error={error}/>
+                : trips
+                    ? <TripsView trips={trips}/>
+                    : null}
 
     </>;
 };

@@ -1,0 +1,19 @@
+.error_code, .error_title, .alternative_text {
+    margin: 0;
+    color: var(--color-font)
+}
+
+.error_code {
+    font-weight: 700;
+    font-size: 5em;
+    line-height: 1em;
+}
+
+.error_title {
+    font-weight: 400;
+    margin-bottom: 1em;
+}
+
+.alternative_text .link {
+    color: inherit;
+}
