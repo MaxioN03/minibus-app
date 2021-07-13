@@ -64,6 +64,12 @@ const SearchView = () => {
         setFilters(newFilters);
     }, [location]);
 
+    useEffect(() => {
+        if (isMainFiltersExist(filters)) {
+            onSearchTrips();
+        }
+    }, [filters]);
+
     const onSearchTrips = () => {
         setIsSearching(true);
         setError(null);
@@ -90,7 +96,7 @@ const SearchView = () => {
         history.push(`${location.pathname}?${searchParams}`);
     };
 
-    const isMainFiltersExist = () => {
+    const isMainFiltersExist = (filters: IFilters | null) => {
         return !!filters?.from && !!filters?.to && !!filters?.date;
     };
 
@@ -122,7 +128,7 @@ const SearchView = () => {
                                      onChange={onChangeFilter.bind(null, 'passengers')}
                                      className={'search_passengers_select'}/>
                     </div>
-                    <SearchButton disabled={isSearching || !isMainFiltersExist()} onClick={onSearchTrips}/>
+                    <SearchButton disabled={isSearching || !isMainFiltersExist(filters)} onClick={onSearchTrips}/>
                 </div>
             </div>
         </div>

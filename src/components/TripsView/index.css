@@ -13,7 +13,12 @@
 
 .direction-title {
     display: none;
-    color: var(--color-font)
+    color: var(--color-font);
+}
+
+.no-results {
+    margin: auto;
+    color: var(--color-font);
 }
 
 .trip_view {
@@ -189,6 +194,10 @@
     .trip_view .trip_view__buy_info .link_button:after {
         width: 12px;
         height: 12px;
+    }
+
+    .no-results {
+        margin-top: 32px;
     }
 }
 

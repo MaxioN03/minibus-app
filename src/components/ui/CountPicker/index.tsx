@@ -2,9 +2,11 @@ import React, {useEffect, useRef, useState} from 'react';
 import './index.css';
 import '../../../index.css';
 
+const DEFAULT_VALUE = 1;
+
 interface ICountPickerProps {
     placeholder: string,
-    onChange: (value: string | null) => void,
+    onChange: (value: number) => void,
     initialValue?: number,
     className?: string,
 }
@@ -18,8 +20,13 @@ export const CountPicker = (props: ICountPickerProps) => {
     let ignoreBlur = false;
 
     useEffect(() => {
+        props.onChange(DEFAULT_VALUE)
+    }, []);
+
+    useEffect(() => {
         if(typeof initialValue === 'number' && !isNaN(initialValue)) {
             setInputValue(initialValue);
+            props.onChange(initialValue ? +initialValue : 0)
         }
     }, [initialValue]);
 

@@ -36,18 +36,22 @@ const TripsView = ({trips}: ITripsViewProps) => {
     const firstTrip = trips?.[0];
     let fromStation = stations.find(station => station._id === firstTrip?.from);
     let toStation = stations.find(station => station._id === firstTrip?.to);
-    let departure = new Date(firstTrip.departure);
+    let departure = new Date(firstTrip?.departure);
 
     return <div className={'trips_view_container'}>
-        <div
-            className={'direction-title'}>{fromStation?.name} - {toStation?.name}, {new Date(departure).toLocaleDateString('ru-RU', {
-            day: 'numeric',
-            month: 'long',
-        })}</div>
-        <div className={'trips_view'}>
-            {trips.map(trip => <TripView key={`${trip.departure}_${trip.agent}`}
-                                         stations={stations} operators={operators} trip={trip}/>)}
-        </div>
+        {firstTrip
+            ? <>
+                <div
+                    className={'direction-title'}>{fromStation?.name} - {toStation?.name}, {new Date(departure).toLocaleDateString('ru-RU', {
+                    day: 'numeric',
+                    month: 'long',
+                })}</div>
+                <div className={'trips_view'}>
+                    {trips.map(trip => <TripView key={`${trip.departure}_${trip.agent}`}
+                                                 stations={stations} operators={operators} trip={trip}/>)}
+                </div>
+            </>
+            : <div className={'no-results'}>По запросу ничего не найдено</div>}
     </div>;
 };
 
