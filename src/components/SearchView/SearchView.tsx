@@ -66,6 +66,7 @@ const SearchView = () => {
 
     const onSearchTrips = () => {
         setIsSearching(true);
+        setError(null);
 
         makeRequest(`trips?from=${filters?.from}&to=${filters?.to}&date=${filters?.date}`)
             .finally(() => {

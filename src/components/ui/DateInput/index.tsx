@@ -31,7 +31,7 @@ export const DateInput = (props: IDateInputProps) => {
     const maxDate = formatDateFromDateToEnString(maxDateObject);
 
     useEffect(() => {
-        if (!isNaN(Date.parse(initialValue || ''))) {
+        if (!isNaN(Date.parse(formatDateFromRuToEn(initialValue || '') || ''))) {
             let date = new Date(formatDateFromRuToEn(initialValue || ''));
 
             let day = date.getDate();
