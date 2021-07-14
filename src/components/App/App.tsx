@@ -2,7 +2,7 @@ import React from 'react';
 import './index.css';
 import SearchView from '../SearchView/SearchView';
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Switch,
     Route,
 } from "react-router-dom";
