@@ -74,7 +74,7 @@ const SearchView = () => {
         setIsSearching(true);
         setError(null);
 
-        makeRequest(`trips?from=${filters?.from}&to=${filters?.to}&date=${filters?.date}`)
+        makeRequest(`trips?from=${filters?.from}&to=${filters?.to}&date=${filters?.date}&passengers=${filters?.passengers}`)
             .finally(() => {
                 setIsSearching(false);
             })

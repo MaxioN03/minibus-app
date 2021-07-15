@@ -8,7 +8,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin: 2em auto;
+    margin: 0 auto 2em;
 }
 
 .direction-title {
@@ -48,12 +48,27 @@
     flex-direction: column;
     gap: 8px;
     flex: 1;
+    min-width: 240px;
+}
+
+.title_from {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
 }
 
 .trip_view .trip_view__route_info_item .title {
     color: var(--secondary-font-color);
     font-size: 12px;
     line-height: 16px;
+}
+
+.trip_view .trip_view__route_info_item .duration_line {
+    height: 4px;
+    border-bottom: 1px dashed var(--second-color);
+    flex: 1;
+    margin-left: 16px;
+    display: inline-block;
 }
 
 .trip_view .trip_view__route_info_item .time {
@@ -141,11 +156,12 @@
         padding: 15px;
     }
 
-    .trip_view .trip_view__route_info {
-        gap: 48px;
+    .trip_view .trip_view__route_info_item {
+        min-width: 0;
     }
 
-    .trip_view .trip_view__route_info_item .title {
+
+    .trip_view .trip_view__route_info_item .duration_line {
         display: none;
     }
 

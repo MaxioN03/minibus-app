@@ -89,7 +89,10 @@ export const TripView = ({trip, stations, operators}: ITripViewProps) => {
     return <div className={'trip_view'}>
         <div className={'trip_view__route_info'}>
             <div className={'trip_view__route_info_item'}>
-                <div className={'title'}>Отправление</div>
+                <div className={'title_from'}>
+                    <div className={'title'}>Отправление</div>
+                    {/*<div className={'duration_line'}></div>*/}
+                </div>
                 <div className={'time'}>{new Date(departure).toLocaleTimeString('ru-RU', {
                     hour: '2-digit',
                     minute: '2-digit',
