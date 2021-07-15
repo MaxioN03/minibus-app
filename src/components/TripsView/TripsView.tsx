@@ -86,6 +86,29 @@ export const TripView = ({trip, stations, operators}: ITripViewProps) => {
         window.open(url?.toString() || '', '_blank')?.focus();
     };
 
+    const getPlaceWord = (placeCount: number) => {
+        if(placeCount >= 10 && placeCount <= 20) {
+            return 'мест';
+        }
+        let lastNumber = placeCount % 10;
+        switch (lastNumber) {
+            case 0:
+                return 'мест';
+            case 1:
+                return 'место';
+            case 2:
+            case 3:
+            case 4:
+                return 'места';
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                return 'мест';
+        }
+    };
+
     return <div className={'trip_view'}>
         <div className={'trip_view__route_info'}>
             <div className={'trip_view__route_info_item'}>
@@ -113,7 +136,7 @@ export const TripView = ({trip, stations, operators}: ITripViewProps) => {
         <div className={'trip_view__buy_info'}>
             <div className={'info_for_customer'}>
                 <span className={'info_for_customer__cost'}>{price} BYN</span>
-                <span className={'info_for_customer__places'}>{freeSeats} мест</span>
+                <span className={'info_for_customer__places'}>{freeSeats} {getPlaceWord(freeSeats)}</span>
             </div>
             <Button className={'link_button'} onClick={moveToAgentSource}>{operator?.name}</Button>
         </div>
