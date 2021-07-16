@@ -6,7 +6,6 @@ import {SearchButton} from '../ui/Button/SearchButton';
 import {DateInput} from '../ui/DateInput';
 import {ITrip, default as TripsView} from "../TripsView/TripsView";
 import {useLocation, useHistory} from 'react-router-dom';
-import {Spin} from "../ui/Spin";
 import {CountPicker} from "../ui/CountPicker";
 import ErrorViewFailedRequest from "../ErrorViewFailedRequest";
 import IntimationUpdatePopUp from "../IntimationUpdatePopUp";
@@ -153,9 +152,7 @@ const SearchView = () => {
             </div>
         </div>
         {isSearching
-            ? !trips
-                ? <Spin/>
-                : <TripsView isTripsLoading={isSearching} trips={trips}/>
+            ? <TripsView isTripsLoading={isSearching} trips={trips || []}/>
             : error
                 ? <ErrorViewFailedRequest error={error}/>
                 : trips

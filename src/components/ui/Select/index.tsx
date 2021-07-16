@@ -50,7 +50,7 @@ export const Select = (props: ISelectProps) => {
             selectInput.current?.blur();
         }
 
-        if (isFocused && isMobile) {
+        if (isFocused && isMobile()) {
             document.body.style.position = 'fixed';
         } else {
             document.body.style.position = 'static';
