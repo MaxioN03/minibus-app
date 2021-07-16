@@ -38,6 +38,7 @@ const SearchView = () => {
     const [error, setError] = useState<any>(null);
     const [stationsOptions, setStationsOptions] = useState<IOption[]>([]);
     const [filters, setFilters] = useState<IFilters | null>(null);
+    const [firstLoad, setFirstLoad] = useState<boolean>(false);
     const location = useLocation();
     const history = useHistory();
 
@@ -65,8 +66,9 @@ const SearchView = () => {
     }, [location]);
 
     useEffect(() => {
-        if (isMainFiltersExist(filters)) {
+        if (!firstLoad && isMainFiltersExist(filters)) {
             onSearchTrips();
+            setFirstLoad(true);
         }
     }, [filters]);
 
