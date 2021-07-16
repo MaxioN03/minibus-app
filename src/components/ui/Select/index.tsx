@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import './index.css';
 import '../../../index.css';
 import {OptionsList} from './OptionsList';
+import {isMobile} from "../../../utils";
 
 export interface IOption {
     value: string,
@@ -35,7 +36,7 @@ export const Select = (props: ISelectProps) => {
         let selectedOptions = options.find(option => option.value === initialValue);
         if (selectedOptions) {
             setSelectedValue(initialValue || null);
-            setInputValue(selectedOptions.text)
+            setInputValue(selectedOptions.text);
         }
     }, [options, initialValue]);
 
@@ -47,6 +48,12 @@ export const Select = (props: ISelectProps) => {
             selectInputElement.selectionStart = selectInputElement?.value.length;
         } else {
             selectInput.current?.blur();
+        }
+
+        if (isFocused && isMobile) {
+            document.body.style.position = 'fixed';
+        } else {
+            document.body.style.position = 'static';
         }
     }, [isFocused]);
 
@@ -75,7 +82,7 @@ export const Select = (props: ISelectProps) => {
         let isOptionsListClick = false;
         let classList = event.target.classList;
         for (let i = 0; i < classList.length; i++) {
-            if (classList[i].includes('select_option')) {
+            if (classList[i].includes('select_option') || classList[i].includes('select_cancel_button')) {
                 isOptionsListClick = true;
             }
         }
@@ -83,6 +90,11 @@ export const Select = (props: ISelectProps) => {
         if (!isOptionsListClick) {
             handleFocus();
         }
+    };
+
+    const onCancelClick = () => {
+        setIgnoreBlur();
+        setIsFocused(false);
     };
 
     const onInputChange = (event: any) => {
@@ -110,7 +122,7 @@ export const Select = (props: ISelectProps) => {
         handleBlur();
     };
 
-    return <div className={`select ${isFocused ? 'focused' : ''} ${className ?? ''}`}
+    return <div className={`select variants_picker ${isFocused ? 'focused' : ''} ${className ?? ''}`}
                 tabIndex={0}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
@@ -118,7 +130,10 @@ export const Select = (props: ISelectProps) => {
                 onMouseUp={clearIgnoreBlur}
                 onMouseOut={clearIgnoreBlur}
                 onClick={onSelectClickHandler}>
-        <div className={'select_placeholder'}>{placeholder ?? 'Выберите'}</div>
+        <div className={'controls'}>
+            <div className={'select_placeholder'}>{placeholder ?? 'Выберите'}</div>
+            <div className={'select_cancel_button'} onClick={onCancelClick}>Отмена</div>
+        </div>
         <input value={inputValue} ref={selectInput} className={'select_input'} onChange={onInputChange}/>
         {isOptionsListShow
             ? <OptionsList selectedValue={selectedValue} onSelect={onSelect}

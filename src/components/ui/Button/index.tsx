@@ -26,6 +26,6 @@ export const Button = (props: React.PropsWithChildren<IButtonProps>) => {
         {icon
             ? <div className={'icon'}>{icon}</div>
             : null}
-        <span className={'button_title'}>{children ?? 'title'}</span>
+        <span className={'button_title'}>{children || ''}</span>
     </button>;
 };

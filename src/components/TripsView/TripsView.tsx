@@ -47,7 +47,6 @@ const TripsView = ({trips, isTripsLoading}: ITripsViewProps) => {
     let toStation = stations?.find(station => station._id === firstTrip?.to);
     let departure = new Date(firstTrip?.departure);
 
-    console.log(isTripsLoading || isLoading);
     return <div className={'trips_view_container'}>
         {isTripsLoading || isLoading
             ? <>

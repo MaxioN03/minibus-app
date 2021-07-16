@@ -1,13 +1,29 @@
-.search_button{
+.search_button {
     border-radius: 8px;
-    padding: 24px;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px 25px !important;
+    gap: 0 !important;
 }
 
 .search_button_icon {
     width: 16px;
     height: 16px;
     background-image: url("./images/search_icon.svg");
+}
+
+.search_button_title {
+    display: none;
+}
+
+@media screen and (max-width: 1080px) {
+    .search_button {
+        padding: 20px 25px !important;
+        gap: 12px !important;
+    }
+
+    .search_button_title {
+        display: block;
+    }
 }

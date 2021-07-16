@@ -97,6 +97,10 @@
         border-radius: 8px 8px 0 0;
     }
 
+    .search_controls_container .search_inputs .search_from_select.focused {
+        border-radius: 0;
+    }
+
     .search_controls_container .search_inputs .search_passengers_select {
         border-radius: 0 0 8px 8px;
     }

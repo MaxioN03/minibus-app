@@ -9,6 +9,7 @@ import {useLocation, useHistory} from 'react-router-dom';
 import {Spin} from "../ui/Spin";
 import {CountPicker} from "../ui/CountPicker";
 import ErrorViewFailedRequest from "../ErrorViewFailedRequest";
+import IntimationUpdatePopUp from "../IntimationUpdatePopUp";
 
 interface IFilters {
     [key: string]: string | number,
@@ -32,6 +33,8 @@ export interface IOperator {
     name: string
 }
 
+const UPDATE_POPUP_TIMEOUT = 900000;
+
 const SearchView = () => {
     const [isSearching, setIsSearching] = useState<boolean>(false);
     const [trips, setTrips] = useState<ITrip[] | null>(null);
@@ -39,8 +42,10 @@ const SearchView = () => {
     const [stationsOptions, setStationsOptions] = useState<IOption[]>([]);
     const [filters, setFilters] = useState<IFilters | null>(null);
     const [firstLoad, setFirstLoad] = useState<boolean>(false);
+    const [isShowUpdatePopup, setIsShowUpdatePopup] = useState<boolean>(false);
     const location = useLocation();
     const history = useHistory();
+    let updateTimer: any = null;
 
     useEffect(() => {
         makeRequest('stations').then(stations => {
@@ -75,10 +80,15 @@ const SearchView = () => {
     const onSearchTrips = () => {
         setIsSearching(true);
         setError(null);
+        clearTimeout(updateTimer);
+        setIsShowUpdatePopup(false);
 
         makeRequest(`trips?from=${filters?.from}&to=${filters?.to}&date=${filters?.date}&passengers=${filters?.passengers}`)
             .finally(() => {
                 setIsSearching(false);
+                updateTimer = setTimeout(() => {
+                    setIsShowUpdatePopup(true);
+                }, UPDATE_POPUP_TIMEOUT);
             })
             .then(trips => {
                 setTrips(trips);
@@ -100,6 +110,14 @@ const SearchView = () => {
 
     const isMainFiltersExist = (filters: IFilters | null) => {
         return !!filters?.from && !!filters?.to && !!filters?.date;
+    };
+
+    const onUpdatePopUpAccept = () => {
+        onSearchTrips();
+    };
+
+    const onUpdatePopUpClose = () => {
+        setIsShowUpdatePopup(false);
     };
 
     return <>
@@ -143,7 +161,9 @@ const SearchView = () => {
                 : trips
                     ? <TripsView isTripsLoading={isSearching} trips={trips}/>
                     : null}
-
+        {isShowUpdatePopup
+            ? <IntimationUpdatePopUp onAccept={onUpdatePopUpAccept} onClose={onUpdatePopUpClose}/>
+            : null}
     </>;
 };
 
