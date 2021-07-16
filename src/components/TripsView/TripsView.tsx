@@ -16,14 +16,17 @@ export interface ITrip {
 }
 
 interface ITripsViewProps {
-    trips: ITrip[]
+    trips: ITrip[],
+    isTripsLoading: boolean
 }
 
-const TripsView = ({trips}: ITripsViewProps) => {
-    const [stations, setStations] = useState<IStation[]>([]);
-    const [operators, setOperators] = useState<IOperator[]>([]);
+const TripsView = ({trips, isTripsLoading}: ITripsViewProps) => {
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [stations, setStations] = useState<IStation[] | null>(null);
+    const [operators, setOperators] = useState<IOperator[] | null>(null);
 
     useEffect(() => {
+
         makeRequest('stations').then(stations => {
             setStations(stations);
         });
@@ -33,25 +36,45 @@ const TripsView = ({trips}: ITripsViewProps) => {
 
     }, []);
 
+    useEffect(() => {
+        if (stations && operators) {
+            setIsLoading(false);
+        }
+    }, [stations, operators]);
+
     const firstTrip = trips?.[0];
-    let fromStation = stations.find(station => station._id === firstTrip?.from);
-    let toStation = stations.find(station => station._id === firstTrip?.to);
+    let fromStation = stations?.find(station => station._id === firstTrip?.from);
+    let toStation = stations?.find(station => station._id === firstTrip?.to);
     let departure = new Date(firstTrip?.departure);
 
+    console.log(isTripsLoading || isLoading);
     return <div className={'trips_view_container'}>
-        {firstTrip
+        {isTripsLoading || isLoading
             ? <>
-                <div
-                    className={'direction-title'}>{fromStation?.name} - {toStation?.name}, {new Date(departure).toLocaleDateString('ru-RU', {
-                    day: 'numeric',
-                    month: 'long',
-                })}</div>
-                <div className={'trips_view'}>
-                    {trips.map(trip => <TripView key={`${trip.departure}_${trip.agent}`}
-                                                 stations={stations} operators={operators} trip={trip}/>)}
-                </div>
+                <div className={'direction_title_shimmer'}/>
+                {firstTrip
+                    ? <div className={`trips_view ${isTripsLoading || isLoading ? 'loading' : ''}`}>
+                        {trips.map((trip, index) => <TripView index={index} key={`${trip.departure}_${trip.agent}`}
+                                                              stations={stations || []} operators={operators || []}
+                                                              trip={trip}/>)}
+                    </div>
+                    : null}
             </>
-            : <div className={'no-results'}>По запросу ничего не найдено</div>}
+            : firstTrip
+                ? <>
+                    <div
+                        className={'direction-title'}>{fromStation?.name} - {toStation?.name}, {new Date(departure).toLocaleDateString('ru-RU', {
+                        day: 'numeric',
+                        month: 'long',
+                    })}</div>
+                    <div className={'trips_view'}>
+                        {trips.map((trip, index) => <TripView index={index} key={`${trip.departure}_${trip.agent}`}
+                                                              stations={stations || []} operators={operators || []}
+                                                              trip={trip}/>)}
+                    </div>
+                </>
+                : <div className={'no-results'}>По запросу ничего не найдено</div>
+        }
     </div>;
 };
 
@@ -60,10 +83,11 @@ export default TripsView;
 interface ITripViewProps {
     trip: ITrip,
     stations: IStation[],
-    operators: IOperator[]
+    operators: IOperator[],
+    index: number
 }
 
-export const TripView = ({trip, stations, operators}: ITripViewProps) => {
+export const TripView = ({trip, stations, operators, index}: ITripViewProps) => {
     let {from, to, departure, agent, freeSeats, price, date, arrival} = trip;
 
     let fromStation = stations.find(station => station._id === from);
@@ -87,7 +111,7 @@ export const TripView = ({trip, stations, operators}: ITripViewProps) => {
     };
 
     const getPlaceWord = (placeCount: number) => {
-        if(placeCount >= 10 && placeCount <= 20) {
+        if (placeCount >= 10 && placeCount <= 20) {
             return 'мест';
         }
         let lastNumber = placeCount % 10;
@@ -109,7 +133,7 @@ export const TripView = ({trip, stations, operators}: ITripViewProps) => {
         }
     };
 
-    return <div className={'trip_view'}>
+    return <div className={'trip_view'} style={{animationDelay: `${(index) / 25}s`}}>
         <div className={'trip_view__route_info'}>
             <div className={'trip_view__route_info_item'}>
                 <div className={'title_from'}>

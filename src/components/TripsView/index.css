@@ -11,8 +11,22 @@
     margin: 0 auto 2em;
 }
 
+.trips_view.loading {
+    opacity: 0.5;
+}
+
+.direction_title_shimmer {
+    display: none;
+    background-color: var(--ui-shimmer-color);
+    width: 300px;
+    height: 18px;
+    margin: 15px;
+    border-radius: 4px;
+}
+
 .direction-title {
     display: none;
+    line-height: 18px;
     color: var(--color-font);
 }
 
@@ -28,6 +42,10 @@
     margin: 0 1em;
     max-width: 960px;
     font-weight: 600;
+    opacity: 0;
+    -webkit-animation-fill-mode: forwards;
+    -webkit-animation-name: fade_in;
+    -webkit-animation-duration: .15s;
 }
 
 .trip_view .trip_view__route_info {
@@ -133,6 +151,10 @@
     .trips_view {
         margin: 0 15px;
         width: calc(100% - 30px);
+    }
+
+    .direction_title_shimmer {
+        display: block;
     }
 
     .direction-title {

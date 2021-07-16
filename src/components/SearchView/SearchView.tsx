@@ -133,11 +133,13 @@ const SearchView = () => {
             </div>
         </div>
         {isSearching
-            ? <Spin/>
+            ? !trips
+                ? <Spin/>
+                : <TripsView isTripsLoading={isSearching} trips={trips}/>
             : error
                 ? <ErrorViewFailedRequest error={error}/>
                 : trips
-                    ? <TripsView trips={trips}/>
+                    ? <TripsView isTripsLoading={isSearching} trips={trips}/>
                     : null}
 
     </>;
