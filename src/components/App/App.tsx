@@ -29,7 +29,7 @@ export default class App extends React.Component<{}, { error: Error | null }> {
             console.log('this.state.error', this.state.error);
         }
 
-        return <div>
+        return <>
             <Router>
                 {this.state.error
                     ? <ErrorViewGlobalError/>
@@ -39,6 +39,6 @@ export default class App extends React.Component<{}, { error: Error | null }> {
                     </Switch>}
             </Router>
             <Footer/>
-        </div>;
+        </>;
     }
 };
