@@ -86,6 +86,7 @@
         flex-direction: column;
         width: calc(100vw - 30px);
         gap: 16px;
+        position: relative;
     }
 
     .search_controls_container .search_inputs {
@@ -103,5 +104,17 @@
 
     .search_controls_container .search_inputs .search_passengers_select {
         border-radius: 0 0 8px 8px;
+    }
+
+    .swipe_routes_button_container {
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        background-color: transparent;
+        position: absolute;
+        top: 42px;
+        z-index: 1;
+        right: 10px;
+        transform: rotate(90deg);
     }
 }

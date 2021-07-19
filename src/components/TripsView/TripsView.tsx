@@ -20,8 +20,6 @@ interface ITripsViewProps {
     isTripsLoading: boolean
 }
 
-const DEFAULT_SKELETONS_LENGTH = 3;
-
 const TripsView = ({trips, isTripsLoading}: ITripsViewProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [stations, setStations] = useState<IStation[] | null>(null);
@@ -53,9 +51,13 @@ const TripsView = ({trips, isTripsLoading}: ITripsViewProps) => {
         {isTripsLoading || isLoading
             ? <>
                 <div className={'direction_title_shimmer'}/>
-                <div className={`trips_view ${isTripsLoading || isLoading ? 'loading' : ''}`}>
-                    {new Array(trips?.length || DEFAULT_SKELETONS_LENGTH).fill(true).map((_, index) => <TripViewSkeleton index={index}/>)}
-                </div>
+                {firstTrip
+                    ? <div className={`trips_view ${isTripsLoading || isLoading ? 'loading' : ''}`}>
+                        {trips.map((trip, index) => <TripView index={index} key={`${trip.departure}_${trip.agent}`}
+                                                              stations={stations || []} operators={operators || []}
+                                                              trip={trip}/>)}
+                    </div>
+                    : null}
             </>
             : firstTrip
                 ? <>
@@ -164,6 +166,6 @@ export const TripView = ({trip, stations, operators, index}: ITripViewProps) => 
     </div>;
 };
 
-export const TripViewSkeleton = ({index}: { index: number }) => {
-    return <div className={'trip_view_skeleton'} key={index}/>;
-};
+// export const TripViewSkeleton = ({index}: { index: number }) => {
+//     return <div className={'trip_view_skeleton'} key={index}/>;
+// };
