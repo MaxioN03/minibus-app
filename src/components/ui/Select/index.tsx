@@ -15,7 +15,7 @@ interface ISelectProps {
     emptyMessage?: string,
     className?: string,
     onSelect: (value: string | null) => void,
-    initialValue?: string
+    initialValue?: string | number | null,
 }
 
 export const Select = (props: ISelectProps) => {
@@ -23,7 +23,7 @@ export const Select = (props: ISelectProps) => {
     const [isOptionsListShow, setIsOptionsListShow] = useState<boolean>(false);
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const [filteredOptions, setFilteredOptions] = useState<IOption[]>([]);
-    const [selectedValue, setSelectedValue] = useState<string | null>(null);
+    const [selectedValue, setSelectedValue] = useState<string | number | null>(null);
     const [inputValue, setInputValue] = useState<string>('');
     const selectInput = useRef<HTMLInputElement | null>(null);
     let ignoreBlur = false;
@@ -37,6 +37,10 @@ export const Select = (props: ISelectProps) => {
         if (selectedOptions) {
             setSelectedValue(initialValue || null);
             setInputValue(selectedOptions.text);
+        }
+        if (initialValue === null) {
+            setSelectedValue(null);
+            setInputValue('');
         }
     }, [options, initialValue]);
 
@@ -136,7 +140,7 @@ export const Select = (props: ISelectProps) => {
         </div>
         <input value={inputValue} ref={selectInput} className={'select_input'} onChange={onInputChange}/>
         {isOptionsListShow
-            ? <OptionsList selectedValue={selectedValue} onSelect={onSelect}
+            ? <OptionsList selectedValue={selectedValue ? selectedValue.toString() : null} onSelect={onSelect}
                            options={filteredOptions} emptyMessage={emptyMessage}/>
             : null}
     </div>;

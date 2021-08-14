@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import './index.css';
 import {makeRequest} from "../../request/request";
-import {IOperator, IStation} from "../SearchView/SearchView";
 import {Button} from "../ui/Button";
+import {IOperator, IStation} from "../SearchView";
 
 export interface ITrip {
     from: string,
@@ -17,10 +17,13 @@ export interface ITrip {
 
 interface ITripsViewProps {
     trips: ITrip[],
+    from: string,
+    to: string,
+    date: string,
     isTripsLoading: boolean
 }
 
-const TripsView = ({trips, isTripsLoading}: ITripsViewProps) => {
+const TripsView = ({from, to, date, trips, isTripsLoading}: ITripsViewProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [stations, setStations] = useState<IStation[] | null>(null);
     const [operators, setOperators] = useState<IOperator[] | null>(null);
@@ -42,36 +45,33 @@ const TripsView = ({trips, isTripsLoading}: ITripsViewProps) => {
         }
     }, [stations, operators]);
 
-    const firstTrip = trips?.[0];
-    let fromStation = stations?.find(station => station._id === firstTrip?.from);
-    let toStation = stations?.find(station => station._id === firstTrip?.to);
-    let departure = new Date(firstTrip?.departure);
+    let fromStation = stations?.find(station => station._id === from);
+    let toStation = stations?.find(station => station._id === to);
+    let departure = new Date(date);
 
     return <div className={'trips_view_container'}>
         {isTripsLoading || isLoading
-            ? <>
-                <div className={'direction_title_shimmer'}/>
-                {firstTrip
-                    ? <div className={`trips_view ${isTripsLoading || isLoading ? 'loading' : ''}`}>
-                        {trips.map((trip, index) => <TripView index={index} key={`${trip.departure}_${trip.agent}`}
-                                                              stations={stations || []} operators={operators || []}
-                                                              trip={trip}/>)}
-                    </div>
-                    : null}
-            </>
-            : firstTrip
-                ? <>
-                    <div
-                        className={'direction-title'}>{fromStation?.name} - {toStation?.name}, {new Date(departure).toLocaleDateString('ru-RU', {
-                        day: 'numeric',
-                        month: 'long',
-                    })}</div>
-                    <div className={'trips_view'}>
-                        {trips.map((trip, index) => <TripView index={index} key={`${trip.departure}_${trip.agent}`}
-                                                              stations={stations || []} operators={operators || []}
-                                                              trip={trip}/>)}
-                    </div>
-                </>
+            ? <div className={'direction_title_shimmer'}/>
+            : <div className={'direction-title'}>
+                {fromStation?.name} - {toStation?.name}, {new Date(departure).toLocaleDateString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+            })}</div>}
+
+        {isTripsLoading || isLoading
+            ? trips?.length
+                ? <div className={`trips_view ${isTripsLoading || isLoading ? 'loading' : ''}`}>
+                    {trips.map((trip, index) => <TripView index={index} key={`${trip.departure}_${trip.agent}`}
+                                                          stations={stations || []} operators={operators || []}
+                                                          trip={trip}/>)}
+                </div>
+                : null
+            : trips?.length
+                ? <div className={'trips_view'}>
+                    {trips.map((trip, index) => <TripView index={index} key={`${trip.departure}_${trip.agent}`}
+                                                          stations={stations || []} operators={operators || []}
+                                                          trip={trip}/>)}
+                </div>
                 : <div className={'no-results'}>По запросу ничего не найдено</div>
         }
     </div>;
@@ -165,7 +165,3 @@ export const TripView = ({trip, stations, operators, index}: ITripViewProps) => 
         </div>
     </div>;
 };
-
-// export const TripViewSkeleton = ({index}: { index: number }) => {
-//     return <div className={'trip_view_skeleton'} key={index}/>;
-// };

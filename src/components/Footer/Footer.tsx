@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.css';
 
-const VERSION = '0.0.1';
+const VERSION = '0.0.2';
 
 const Footer = () => {
     return <footer>

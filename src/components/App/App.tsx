@@ -1,6 +1,5 @@
 import React from 'react';
 import './index.css';
-import SearchView from '../SearchView/SearchView';
 import {
     HashRouter as Router,
     Switch,
@@ -9,6 +8,7 @@ import {
 import Footer from "../Footer/Footer";
 import ErrorViewNotFound from "../ErrorViewNotFound";
 import ErrorViewGlobalError from "../ErrorViewGlobalError";
+import SearchView from "../SearchView";
 
 export default class App extends React.Component<{}, { error: Error | null }> {
     state = {

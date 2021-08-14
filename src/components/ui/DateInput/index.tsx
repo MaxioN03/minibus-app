@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {subDays, addDays} from 'date-fns';
 import './index.css';
 import '../../../index.css';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -14,7 +13,7 @@ interface IDateInputProps {
     placeholder: string,
     className?: string,
     onSelect: (value: string) => void
-    initialValue?: string
+    initialValue?: string | null
 }
 
 export const DateInput = (props: IDateInputProps) => {
@@ -31,6 +30,10 @@ export const DateInput = (props: IDateInputProps) => {
     const maxDate = formatDateFromDateToEnString(maxDateObject);
 
     useEffect(() => {
+        if (initialValue === null) {
+            setInputValue(``);
+            props.onSelect('');
+        }
         if (!isNaN(Date.parse(formatDateFromRuToEn(initialValue || '') || ''))) {
             let date = new Date(formatDateFromRuToEn(initialValue || ''));
 
@@ -108,7 +111,7 @@ export const DateInput = (props: IDateInputProps) => {
     </div>;
 };
 
-const formatDateFromRuToEn = (date: string) => {
+export const formatDateFromRuToEn = (date: string) => {
     let [day, month, year] = date.split('-');
     return [year, month, day].join('-');
 };
