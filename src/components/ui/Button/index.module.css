@@ -39,23 +39,6 @@
     background-color: var(--main-color-disabled);
 }
 
-.button.second_color {
-    color: var(--second-color);
-    background-color: #fff;
-}
-
-.button.second_color:hover {
-    background-color: #fff;
-}
-
-.button.second_color:active {
-    background-color: var(--second-color-light);
-}
-
-.button.second_color.disabled {
-    background-color: var(--main-color-disabled);
-}
-
 /* Secondary */
 .secondary {
     background-color: var(--main-color-secondary);
@@ -63,14 +46,14 @@
     padding: 12px;
 }
 
-.secondary .icon {
-    width: 12px;
-    height: 12px;
-}
-
 .secondary .button_title {
     font-size: 16px;
     line-height: 24px;
+}
+
+.secondary .icon {
+    width: 12px;
+    height: 12px;
 }
 
 .secondary:hover {
@@ -78,11 +61,29 @@
 }
 
 .secondary:active {
-    background-color: var(--main-color-secondary);
-    color: var(--main-color-dark);
+    background-color: var(--main-color-secondary-active);
 }
 
 .secondary.disabled {
-    color: var(--color-font);
+    color: var(--ui-disabled-color);
     background-color: var(--main-color-secondary-hover);
+}
+
+/* Second color */
+
+.button.second_color {
+    color: var(--second-color);
+    background-color: #fff;
+}
+
+.button.second_color:hover {
+    color: var(--second-color-hover);
+}
+
+.button.second_color:active {
+    color: var(--second-color-dark);
+}
+
+.button.second_color.disabled {
+    color: var(--ui-disabled-color);
 }

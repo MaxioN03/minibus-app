@@ -6,6 +6,8 @@
 
     --main-color-secondary: #f3e6e4;
     --main-color-secondary-hover: #f4eeed;
+    --main-color-secondary-active: #f1dedb;
+    --main-color-secondary-disabled: #e5dcdb;
 
     --second-color: #9295F7;
     --second-color-dark: #7376e7;

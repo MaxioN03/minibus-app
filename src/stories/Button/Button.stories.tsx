@@ -30,6 +30,12 @@ PrimaryActive.args = {
     children: MOCK_TITLE,
 };
 
+export const PrimaryDisabled = Template.bind({});
+PrimaryDisabled.args = {
+    children: MOCK_TITLE,
+    disabled: true,
+};
+
 export const Secondary = Template.bind({});
 Secondary.args = {
     children: MOCK_TITLE,
@@ -48,6 +54,12 @@ SecondaryActive.args = {
     secondary: true
 };
 
+export const SecondaryDisabled = Template.bind({});
+SecondaryDisabled.args = {
+    children: MOCK_TITLE,
+    secondary: true,
+    disabled: true,
+};
 
 export const PrimarySecondColor = Template.bind({});
 PrimarySecondColor.args = {
@@ -67,6 +79,13 @@ PrimarySecondColorActive.args = {
     secondColor: true,
 };
 
+export const PrimarySecondColorDisabled = Template.bind({});
+PrimarySecondColorDisabled.args = {
+    children: MOCK_TITLE,
+    secondColor: true,
+    disabled: true,
+};
+
 export const SecondarySecondColor = Template.bind({});
 SecondarySecondColor.args = {
     children: MOCK_TITLE,
@@ -82,10 +101,18 @@ SecondarySecondColorHovered.args = {
 };
 
 export const SecondarySecondColorActive = Template.bind({});
-SecondaryActive.args = {
+SecondarySecondColorActive.args = {
     children: MOCK_TITLE,
     secondary: true,
     secondColor: true,
+};
+
+export const SecondarySecondColorDisabled = Template.bind({});
+SecondarySecondColorDisabled.args = {
+    children: MOCK_TITLE,
+    secondary: true,
+    secondColor: true,
+    disabled: true
 };
 
 
