@@ -1,29 +1,30 @@
+/* Main button style */
 .button {
     display: flex;
-    gap: 12px;
     justify-content: center;
     align-items: center;
-    color: #fff;
-    transition: all var(--ui-transition-time);
+    gap: 12px;
+
     background-color: var(--main-color);
-    border-radius: 8px;
-    padding: 20px;
+    color: #fff;
+
     border: none;
-}
+    border-radius: 8px;
 
-.button.second_color {
-    color: var(--second-color);
-    background-color: #fff;
-}
+    height: 64px;
+    padding: 20px;
 
-.button .icon {
-    width: 16px;
-    height: 16px;
+    transition: all var(--ui-transition-time);
 }
 
 .button .button_title {
     font-size: 16px;
     line-height: 24px;
+}
+
+.button .icon {
+    width: 16px;
+    height: 16px;
 }
 
 .button:hover {
@@ -36,6 +37,11 @@
 
 .button.disabled {
     background-color: var(--main-color-disabled);
+}
+
+.button.second_color {
+    color: var(--second-color);
+    background-color: #fff;
 }
 
 .button.second_color:hover {

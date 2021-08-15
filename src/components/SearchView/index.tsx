@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import './index.css';
+import style from "./index.module.css";
 import {makeRequest} from '../../request/request';
 import {IOption} from '../ui/Select';
 import {SearchButton} from '../ui/Button/SearchButton';
@@ -185,13 +185,13 @@ const SearchView = () => {
     };
 
     return <>
-        <div className={'search_view_container'}>
-            <div className={'search_view'}>
-                <div className={'search_title'}>
+        <div className={style.search_view_container}>
+            <div className={style.search_view}>
+                <div className={style.search_title}>
                     <h1>Маршрутки по Беларуси</h1>
                     <span>Онлайн-сервис для поиска билетов</span>
                 </div>
-                <div className={'direction_buttons'}>
+                <div className={style.direction_buttons}>
                     <DirectionButton onClick={onDirectionButtonClick.bind(null, 'forward')}
                                      picked={pickedDirection === 'forward'} title={'Туда'}/>
                     <DirectionButton onClick={onDirectionButtonClick.bind(null, 'back')}
@@ -199,7 +199,7 @@ const SearchView = () => {
                                      included={isAnyFiltersExist(filters.back)}
                                      picked={pickedDirection === 'back'} title={'Обратно'}/>
                 </div>
-                <div className={'search_controls_container'}>
+                <div className={style.search_controls_container}>
                     <SearchViewForm prefix={pickedDirection} stationsOptions={stationsOptions}/>
                     <SearchButton disabled={isSearching || !isMainFiltersExist(filters.forward)}
                                   onClick={onSearchTrips}/>
@@ -209,16 +209,18 @@ const SearchView = () => {
         {isSearching
             ? trips?.map(tripsInfo => {
                 let {from, to, date, trips} = tripsInfo;
-                let key = `${from}_${to}_${date}`
-                return <TripsView key={key} from={from} to={to} date={date} trips={trips} isTripsLoading={isSearching}/>;
+                let key = `${from}_${to}_${date}`;
+                return <TripsView key={key} from={from} to={to} date={date} trips={trips}
+                                  isTripsLoading={isSearching}/>;
             })
             : error
                 ? <ErrorViewFailedRequest error={error}/>
                 : trips
                     ? trips.map(tripsInfo => {
                         let {from, to, date, trips} = tripsInfo;
-                        let key = `${from}_${to}_${date}`
-                        return <TripsView key={key} from={from} to={to} date={date} trips={trips} isTripsLoading={isSearching}/>;
+                        let key = `${from}_${to}_${date}`;
+                        return <TripsView key={key} from={from} to={to} date={date} trips={trips}
+                                          isTripsLoading={isSearching}/>;
                     })
                     : null}
         {isShowUpdatePopup

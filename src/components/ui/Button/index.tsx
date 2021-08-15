@@ -1,6 +1,7 @@
 import React from 'react';
-import './style.css';
+import style from './index.module.css';
 import '../../../index.css';
+import {EMPTY_FILLER} from "../../../constants/constants";
 
 interface IButtonProps {
     onClick: () => void,
@@ -20,12 +21,14 @@ export const Button = (props: React.PropsWithChildren<IButtonProps>) => {
         }
     };
 
-    return <button className={`button ${secondary ? 'secondary' : ''} ${disabled ? 'disabled' : ''} `
-    + ` ${secondColor ? 'second_color' : ''} ${className ?? ''}`}
+    return <button className={`${style.button} ${secondary ? style.secondary : ''} ${disabled ? style.disabled : ''} `
+    + ` ${secondColor ? style.second_color : ''} ${className ?? ''}`}
                    onClick={onClick}>
         {icon
-            ? <div className={'icon'}>{icon}</div>
+            ? <div className={style.icon}>{icon}</div>
             : null}
-        <span className={'button_title'}>{children || ''}</span>
+        {children !== null
+            ? <span className={style.button_title}>{children ?? EMPTY_FILLER}</span>
+            : null}
     </button>;
 };

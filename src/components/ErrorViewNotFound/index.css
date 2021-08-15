@@ -1,6 +1,6 @@
 .error_code, .error_title, .alternative_text {
     margin: 0;
-    color: var(--color-font)
+    color: var(--color-font);
 }
 
 .error_code {

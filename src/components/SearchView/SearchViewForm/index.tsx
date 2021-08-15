@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import '../index.css';
+import style from "../index.module.css";
 import {IOption, Select} from '../../ui/Select';
 import {DateInput} from '../../ui/DateInput';
 import {useLocation, useHistory} from 'react-router-dom';
@@ -100,14 +100,14 @@ export const SearchViewForm = (props: ISearchViewFormProps) => {
         history.push(`${location.pathname}?${searchParams}`);
     };
 
-    return <div className={'search_inputs'}>
+    return <div className={style.search_inputs}>
         <Select onSelect={onChangeFilter.bind(null, getCgiKeyWithPrefix('from', prefix))}
                 options={stationsOptions}
                 emptyMessage={'Не найдено подходящих городов'}
-                className={'search_from_select'}
+                className={style.search_from_select}
                 initialValue={filters?.from ?? null}
                 placeholder={'Откуда'}/>
-        <div className={'swipe_routes_button_container'}>
+        <div className={style.swipe_routes_button_container}>
             <SwipeRoutesButton onClick={onSwipeRoutesClick}/>
         </div>
         <Select onSelect={onChangeFilter.bind(null, getCgiKeyWithPrefix('to', prefix))}
@@ -119,7 +119,7 @@ export const SearchViewForm = (props: ISearchViewFormProps) => {
         <CountPicker placeholder={'Пассажиры'}
                      initialValue={filters?.passengers ? +filters?.passengers : null}
                      onChange={onChangeFilter.bind(null, getCgiKeyWithPrefix('passengers', prefix))}
-                     className={'search_passengers_select'}/>
+                     className={style.search_passengers_select}/>
     </div>;
 };
 

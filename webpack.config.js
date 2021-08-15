@@ -1,11 +1,12 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: './src/index.tsx',
   output: {
     path: path.join(__dirname, 'build'),
-    filename: 'index.bundle.js'
+    filename: 'index.bundle.js',
   },
   mode: process.env.NODE_ENV || 'development',
   resolve: {
@@ -28,8 +29,16 @@ module.exports = {
         use: ['ts-loader'],
       },
       {
-        test: /\.(css|scss)$/,
-        use: ['style-loader', 'css-loader'],
+        test: /\.css$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+            },
+          },
+        ],
       },
       {
         test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
@@ -40,7 +49,12 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src', 'index.html'),
-      favicon: "./src/favicon.svg"
+      favicon: './src/favicon.svg',
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+      chunkFilename: '[name].[contenthash].css',
+      ignoreOrder: true,
     }),
   ],
 };
