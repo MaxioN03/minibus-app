@@ -1,25 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import style from "./index.module.css";
 import {makeRequest} from '../../request/request';
-import {IOption} from '../ui/Select';
-import {SearchButton} from '../ui/Button/SearchButton';
 import {useHistory, useLocation} from 'react-router-dom';
 import IntimationUpdatePopUp from "../IntimationUpdatePopUp";
-import {DirectionButton} from "../ui/Button/DirectionButton";
-import {getCgiKeyWithPrefix, SearchViewForm} from "./SearchViewForm";
+import {getCgiKeyWithPrefix} from "./SearchViewFormBlock/SearchViewForm";
 import {formatDateFromRuToEn} from "../ui/DateInput";
 import {ITrip} from "../TripsView";
-import {DIRECTIONS, FilterKeys, Filters, IStation} from "./types";
+import {DIRECTIONS, FilterKeys, Filters} from "./types";
 import SearchViewResults from "./SearchViewResults";
 import {UPDATE_POPUP_TIMEOUT} from "./constants";
+import SearchViewFormBlock from "./SearchViewFormBlock";
 
 const SearchView = () => {
     const [isSearching, setIsSearching] = useState<boolean>(false);
-    const [trips, setTrips] = useState<{ from: string, to: string, date: string, direction: DIRECTIONS, trips: ITrip[] }[] | null>(null);
     const [error, setError] = useState<any>(null);
+    const [trips, setTrips] = useState<{ from: string, to: string, date: string, direction: DIRECTIONS, trips: ITrip[] }[] | null>(null);
     const [isShowUpdatePopup, setIsShowUpdatePopup] = useState<boolean>(false);
-    const [pickedDirection, setPickedDirection] = useState<DIRECTIONS.FORWARD | DIRECTIONS.BACK>(DIRECTIONS.FORWARD);
-    const [stationsOptions, setStationsOptions] = useState<IOption[]>([]);
     const [filters, setFilters] = useState<{ [DIRECTIONS.FORWARD]: Filters, [DIRECTIONS.BACK]: Filters }>({
         [DIRECTIONS.FORWARD]: {
             from: null,
@@ -39,15 +34,6 @@ const SearchView = () => {
     const history = useHistory();
 
     let updateTimer: any = null;
-
-    useEffect(() => {
-        makeRequest('stations').then(stations => {
-            let stationsOptions = stations.map((station: IStation) => {
-                return {text: station.name, value: station._id};
-            });
-            setStationsOptions(stationsOptions);
-        });
-    }, []);
 
     useEffect(() => {
         let newFilters: { [DIRECTIONS.FORWARD]: Filters, [DIRECTIONS.BACK]: Filters } = {
@@ -79,7 +65,7 @@ const SearchView = () => {
 
     useEffect(() => {
         if (isMainFiltersExist(filters[DIRECTIONS.FORWARD]) || isMainFiltersExist(filters[DIRECTIONS.BACK])) {
-            onSearchTrips();
+            searchTrips();
         }
     }, [filters]);
 
@@ -90,11 +76,11 @@ const SearchView = () => {
         [FilterKeys.from, FilterKeys.to, FilterKeys.date, FilterKeys.passengers].forEach(filterKey => {
             searchParams.delete(getCgiKeyWithPrefix(filterKey, DIRECTIONS.BACK));
         });
-        console.log(`${location.pathname}?${searchParams}`);
+
         history.push(`${location.pathname}?${searchParams}`);
     };
 
-    const onSearchTrips = () => {
+    const searchTrips = () => {
         setIsSearching(true);
         setError(null);
         clearTimeout(updateTimer);
@@ -147,71 +133,23 @@ const SearchView = () => {
             });
     };
 
-    const isAnyFiltersExist = (filters: Filters) => {
-        return !!filters?.from || !!filters?.to || !!filters?.date || !!filters?.passengers;
-    };
-
-    const isMainFiltersExist = (filters: Filters) => {
-        return !!filters?.from && !!filters?.to && !!filters?.date && !!filters?.passengers;
-    };
-
     const onUpdatePopUpAccept = () => {
-        onSearchTrips();
+        searchTrips();
     };
 
     const onUpdatePopUpClose = () => {
         setIsShowUpdatePopup(false);
     };
 
-    const onDirectionButtonClick = (type: DIRECTIONS.FORWARD | DIRECTIONS.BACK, isIncluded?: boolean) => {
-        if (type === DIRECTIONS.BACK) {
-            if (!isIncluded) {
-                setPickedDirection(DIRECTIONS.FORWARD);
-            } else {
-                let forwardFilterObject = filters?.[DIRECTIONS.FORWARD];
-                let searchParams = new URLSearchParams(location.search);
-
-                if (forwardFilterObject?.to !== null) {
-                    searchParams.set(`back_from`, forwardFilterObject.to.toString());
-                }
-                if (forwardFilterObject?.from !== null) {
-                    searchParams.set(`back_to`, forwardFilterObject.from.toString());
-                }
-                if (forwardFilterObject?.passengers !== null) {
-                    searchParams.set(`back_passengers`, forwardFilterObject.passengers.toString());
-                }
-                history.push(`${location.pathname}?${searchParams}`);
-
-                setPickedDirection(type);
-            }
-        } else {
-            setPickedDirection(type);
-        }
+    const isMainFiltersExist = (filters: Filters) => {
+        return !!filters?.from && !!filters?.to && !!filters?.date && !!filters?.passengers;
     };
 
     return <>
-        <div className={style.search_view_container}>
-            <div className={style.search_view}>
-                <div className={style.search_title}>
-                    <h1>Маршрутки по Беларуси</h1>
-                    <span>Онлайн-сервис для поиска билетов</span>
-                </div>
-                <div className={style.direction_buttons}>
-                    <DirectionButton onClick={onDirectionButtonClick.bind(null, DIRECTIONS.FORWARD)}
-                                     picked={pickedDirection === DIRECTIONS.FORWARD} title={'Туда'}/>
-                    <DirectionButton onClick={onDirectionButtonClick.bind(null, DIRECTIONS.BACK)}
-                                     includable
-                                     included={isAnyFiltersExist(filters[DIRECTIONS.BACK])}
-                                     onUnInclude={onUnIncludeBack}
-                                     picked={pickedDirection === DIRECTIONS.BACK} title={'Обратно'}/>
-                </div>
-                <div className={style.search_controls_container}>
-                    <SearchViewForm prefix={pickedDirection} stationsOptions={stationsOptions}/>
-                    <SearchButton disabled={isSearching || !isMainFiltersExist(filters[DIRECTIONS.FORWARD])}
-                                  onClick={onSearchTrips}/>
-                </div>
-            </div>
-        </div>
+        <SearchViewFormBlock filters={filters}
+                             onUnIncludeBack={onUnIncludeBack}
+                             isSearching={isSearching}
+                             searchTrips={searchTrips}/>
         <SearchViewResults isSearching={isSearching} error={error} tripsObjects={trips}/>
         {isShowUpdatePopup
             ? <IntimationUpdatePopUp onAccept={onUpdatePopUpAccept} onClose={onUpdatePopUpClose}/>

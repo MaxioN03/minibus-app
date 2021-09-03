@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import style from "../index.module.css";
-import {IOption, Select} from '../../ui/Select';
-import {DateInput} from '../../ui/DateInput';
+import {IOption, Select} from '../../../ui/Select';
+import {DateInput} from '../../../ui/DateInput';
 import {useLocation, useHistory} from 'react-router-dom';
-import {CountPicker} from "../../ui/CountPicker";
-import {SwipeRoutesButton} from "../../ui/Button/SwipeRoutesButton";
-import {FilterKeys, Filters} from "../types";
+import {CountPicker} from "../../../ui/CountPicker";
+import {SwipeRoutesButton} from "../../../ui/Button/SwipeRoutesButton";
+import {FilterKeys, Filters} from "../../types";
 
 interface ISearchViewFormProps {
     prefix: string,
