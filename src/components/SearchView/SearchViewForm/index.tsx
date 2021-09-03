@@ -5,7 +5,7 @@ import {DateInput} from '../../ui/DateInput';
 import {useLocation, useHistory} from 'react-router-dom';
 import {CountPicker} from "../../ui/CountPicker";
 import {SwipeRoutesButton} from "../../ui/Button/SwipeRoutesButton";
-import {FilterKeys, Filters} from "../index";
+import {FilterKeys, Filters} from "../types";
 
 interface ISearchViewFormProps {
     prefix: string,

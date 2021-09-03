@@ -1,8 +1,8 @@
 import React from 'react';
 import './index.css';
 import {Button} from "../../ui/Button";
-import {IOperator, IStation} from "../../SearchView";
 import {ITrip} from "../index";
+import {IOperator, IStation} from "../../SearchView/types";
 
 interface ITripViewProps {
     trip: ITrip,

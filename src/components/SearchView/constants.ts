@@ -1,0 +1,1 @@
+export const UPDATE_POPUP_TIMEOUT = 900000;

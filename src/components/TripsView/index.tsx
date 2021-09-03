@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import './index.css';
 import {makeRequest} from "../../request/request";
-import {IOperator, IStation} from "../SearchView";
 import TripView from "./TripView";
+import {IOperator, IStation} from "../SearchView/types";
 
 export interface ITrip {
     from: string,

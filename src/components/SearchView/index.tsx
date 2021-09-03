@@ -4,42 +4,14 @@ import {makeRequest} from '../../request/request';
 import {IOption} from '../ui/Select';
 import {SearchButton} from '../ui/Button/SearchButton';
 import {useHistory, useLocation} from 'react-router-dom';
-import ErrorViewFailedRequest from "../ErrorViewFailedRequest";
 import IntimationUpdatePopUp from "../IntimationUpdatePopUp";
 import {DirectionButton} from "../ui/Button/DirectionButton";
 import {getCgiKeyWithPrefix, SearchViewForm} from "./SearchViewForm";
 import {formatDateFromRuToEn} from "../ui/DateInput";
-import {Switcher} from "../ui/Switcher";
-import TripsView, {ITrip} from "../TripsView";
-
-enum DIRECTIONS {
-    FORWARD = 'forward',
-    BACK = 'back',
-}
-
-export enum FilterKeys {
-    from = 'from',
-    to = 'to',
-    date = 'date',
-    passengers = 'passengers',
-}
-
-export type Filters = Record<FilterKeys, string | number | null>
-
-export interface IStation {
-    _id: string,
-    name: string,
-    operatorsKeys: {
-        [key: string]: string
-    }
-}
-
-export interface IOperator {
-    _id: string,
-    name: string
-}
-
-const UPDATE_POPUP_TIMEOUT = 900000;
+import {ITrip} from "../TripsView";
+import {DIRECTIONS, FilterKeys, Filters, IStation} from "./types";
+import SearchViewResults from "./SearchViewResults";
+import {UPDATE_POPUP_TIMEOUT} from "./constants";
 
 const SearchView = () => {
     const [isSearching, setIsSearching] = useState<boolean>(false);
@@ -47,7 +19,6 @@ const SearchView = () => {
     const [error, setError] = useState<any>(null);
     const [isShowUpdatePopup, setIsShowUpdatePopup] = useState<boolean>(false);
     const [pickedDirection, setPickedDirection] = useState<DIRECTIONS.FORWARD | DIRECTIONS.BACK>(DIRECTIONS.FORWARD);
-    const [pickedResult, setPickedResult] = useState<string>(DIRECTIONS.FORWARD);
     const [stationsOptions, setStationsOptions] = useState<IOption[]>([]);
     const [filters, setFilters] = useState<{ [DIRECTIONS.FORWARD]: Filters, [DIRECTIONS.BACK]: Filters }>({
         [DIRECTIONS.FORWARD]: {
@@ -218,21 +189,6 @@ const SearchView = () => {
         }
     };
 
-    const isBackTripsExist = () => !!trips?.find(tripObject => tripObject.direction === DIRECTIONS.BACK);
-
-    const onChangePickedResult = (value: string) => {
-        if (value === DIRECTIONS.BACK) {
-            if (isBackTripsExist()) {
-                setPickedResult(value);
-
-            }
-        } else {
-            setPickedResult(value);
-        }
-    };
-
-    let currentObject = trips?.find(trip => trip.direction === pickedResult);
-
     return <>
         <div className={style.search_view_container}>
             <div className={style.search_view}>
@@ -256,18 +212,7 @@ const SearchView = () => {
                 </div>
             </div>
         </div>
-        <div className={style.results_switcher_container}>
-            <Switcher onClick={onChangePickedResult} disabled={!isBackTripsExist()} options={[
-                {value: DIRECTIONS.FORWARD, selected: pickedResult === DIRECTIONS.FORWARD, text: 'Туда'},
-                {value: DIRECTIONS.BACK, selected: pickedResult === DIRECTIONS.BACK, text: 'Обратно'},
-            ]}/>
-        </div>
-        {error
-            ? <ErrorViewFailedRequest error={error}/>
-            : <TripsView key={`${currentObject?.from}_${currentObject?.to}_${currentObject?.date}`}
-                         from={currentObject?.from ?? ''} to={currentObject?.to ?? ''}
-                         date={currentObject?.date ?? ''} trips={currentObject?.trips ?? []}
-                         isTripsLoading={isSearching}/>}
+        <SearchViewResults isSearching={isSearching} error={error} tripsObjects={trips}/>
         {isShowUpdatePopup
             ? <IntimationUpdatePopUp onAccept={onUpdatePopUpAccept} onClose={onUpdatePopUpClose}/>
             : null}
