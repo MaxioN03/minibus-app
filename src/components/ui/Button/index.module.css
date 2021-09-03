@@ -11,7 +11,6 @@
     border: none;
     border-radius: 8px;
 
-    height: 64px;
     padding: 20px;
 
     transition: all var(--ui-transition-time);

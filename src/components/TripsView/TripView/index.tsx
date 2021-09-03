@@ -1,83 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './index.css';
-import {makeRequest} from "../../request/request";
-import {Button} from "../ui/Button";
-import {IOperator, IStation} from "../SearchView";
-
-export interface ITrip {
-    from: string,
-    to: string,
-    date: string,
-    departure: string,
-    arrival?: string,
-    freeSeats: number,
-    price: number,
-    agent: string,
-}
-
-interface ITripsViewProps {
-    trips: ITrip[],
-    from: string,
-    to: string,
-    date: string,
-    isTripsLoading: boolean
-}
-
-const TripsView = ({from, to, date, trips, isTripsLoading}: ITripsViewProps) => {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [stations, setStations] = useState<IStation[] | null>(null);
-    const [operators, setOperators] = useState<IOperator[] | null>(null);
-
-    useEffect(() => {
-
-        makeRequest('stations').then(stations => {
-            setStations(stations);
-        });
-        makeRequest('operators').then(operators => {
-            setOperators(operators);
-        });
-
-    }, []);
-
-    useEffect(() => {
-        if (stations && operators) {
-            setIsLoading(false);
-        }
-    }, [stations, operators]);
-
-    let fromStation = stations?.find(station => station._id === from);
-    let toStation = stations?.find(station => station._id === to);
-    let departure = new Date(date);
-
-    return <div className={'trips_view_container'}>
-        {isTripsLoading || isLoading
-            ? <div className={'direction_title_shimmer'}/>
-            : <div className={'direction-title'}>
-                {fromStation?.name} - {toStation?.name}, {new Date(departure).toLocaleDateString('ru-RU', {
-                day: 'numeric',
-                month: 'long',
-            })}</div>}
-
-        {isTripsLoading || isLoading
-            ? trips?.length
-                ? <div className={`trips_view ${isTripsLoading || isLoading ? 'loading' : ''}`}>
-                    {trips.map((trip, index) => <TripView index={index} key={`${trip.departure}_${trip.agent}`}
-                                                          stations={stations || []} operators={operators || []}
-                                                          trip={trip}/>)}
-                </div>
-                : null
-            : trips?.length
-                ? <div className={'trips_view'}>
-                    {trips.map((trip, index) => <TripView index={index} key={`${trip.departure}_${trip.agent}`}
-                                                          stations={stations || []} operators={operators || []}
-                                                          trip={trip}/>)}
-                </div>
-                : <div className={'no-results'}>По запросу ничего не найдено</div>
-        }
-    </div>;
-};
-
-export default TripsView;
+import {Button} from "../../ui/Button";
+import {IOperator, IStation} from "../../SearchView";
+import {ITrip} from "../index";
 
 interface ITripViewProps {
     trip: ITrip,
@@ -86,7 +11,7 @@ interface ITripViewProps {
     index: number
 }
 
-export const TripView = ({trip, stations, operators, index}: ITripViewProps) => {
+const TripView = ({trip, stations, operators, index}: ITripViewProps) => {
     let {from, to, departure, agent, freeSeats, price, date, arrival} = trip;
 
     let fromStation = stations.find(station => station._id === from);
@@ -165,3 +90,5 @@ export const TripView = ({trip, stations, operators, index}: ITripViewProps) => 
         </div>
     </div>;
 };
+
+export default TripView;

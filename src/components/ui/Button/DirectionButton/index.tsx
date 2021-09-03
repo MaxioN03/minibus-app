@@ -3,6 +3,7 @@ import './style.css';
 
 interface IDirectionButtonProps {
     onClick: (isIncluded?: boolean) => void,
+    onUnInclude?: () => void,
     disabled?: boolean,
     picked: boolean,
     includable?: boolean, //if true it's possible to turn on/off tis button
@@ -11,7 +12,7 @@ interface IDirectionButtonProps {
 }
 
 export const DirectionButton = (props: React.PropsWithChildren<IDirectionButtonProps>) => {
-    const {onClick: onClickProps, title, includable} = props;
+    const {onClick: onClickProps, title, includable, onUnInclude} = props;
     const [picked, setPicked] = useState<boolean>(false);
     const [included, setIncluded] = useState<boolean>(false);
 
@@ -41,10 +42,9 @@ export const DirectionButton = (props: React.PropsWithChildren<IDirectionButtonP
     };
 
     const unInclude = () => {
-        console.log('unInclude');
+        onUnInclude?.();
     };
 
-    //secondary={!picked} secondColor={picked}
     return <button className={`direction_button ${!picked ? 'inactive' : ''}`} onClick={onClick}>
         {includable && !included
             ? <span className={'direction_button_include_control add'}>+</span>
