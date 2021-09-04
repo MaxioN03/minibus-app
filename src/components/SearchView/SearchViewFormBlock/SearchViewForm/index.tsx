@@ -21,6 +21,8 @@ export const SearchViewForm = (props: ISearchViewFormProps) => {
         date: null,
         passengers: 1,
     });
+    const [fromOptions, setFromOptions] = useState<IOption[]>([]);
+    const [toOptions, setToOptions] = useState<IOption[]>([]);
 
     const location = useLocation();
     const history = useHistory();
@@ -43,6 +45,20 @@ export const SearchViewForm = (props: ISearchViewFormProps) => {
 
         setFilters(newFilters);
     }, [prefix]);
+
+    useEffect(() => {
+        const toOptions = filters.from
+            ? stationsOptions.filter(stationsOption => stationsOption.value !== filters.from)
+            : stationsOptions;
+        setToOptions(toOptions);
+    }, [filters.from, stationsOptions]);
+
+    useEffect(() => {
+        const fromOptions = filters.to
+            ? stationsOptions.filter(stationsOption => stationsOption.value !== filters.to)
+            : stationsOptions;
+        setFromOptions(fromOptions);
+    }, [filters.to, stationsOptions]);
 
     const onChangeFilter = (type: string, value: any) => {
         let searchParams = new URLSearchParams(location.search);
@@ -102,7 +118,7 @@ export const SearchViewForm = (props: ISearchViewFormProps) => {
 
     return <div className={style.search_inputs}>
         <Select onSelect={onChangeFilter.bind(null, getCgiKeyWithPrefix('from', prefix))}
-                options={stationsOptions}
+                options={fromOptions}
                 emptyMessage={'Не найдено подходящих городов'}
                 className={style.search_from_select}
                 initialValue={filters?.from ?? null}
@@ -111,7 +127,7 @@ export const SearchViewForm = (props: ISearchViewFormProps) => {
             <SwipeRoutesButton onClick={onSwipeRoutesClick}/>
         </div>
         <Select onSelect={onChangeFilter.bind(null, getCgiKeyWithPrefix('to', prefix))}
-                options={stationsOptions}
+                options={toOptions}
                 initialValue={filters?.to ?? null}
                 emptyMessage={'Не найдено подходящих городов'} placeholder={'Куда'}/>
         <DateInput placeholder={'Дата'} initialValue={filters?.date ? filters?.date?.toString() : null}
