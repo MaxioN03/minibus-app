@@ -1,0 +1,46 @@
+.error_view_container {
+    display: flex;
+    justify-content: center;
+}
+
+.error_view {
+    padding: 64px 84px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background-color);
+    border-radius: 32px;
+    margin: 40px;
+    max-width: 900px;
+}
+
+.error_code, .error_title, .alternative_text {
+    margin: 0;
+    color: var(--color-font);
+}
+
+.error_code {
+    font-weight: 700;
+    font-size: 5em;
+    line-height: 1em;
+}
+
+.error_title {
+    font-weight: 400;
+    margin-bottom: 1em;
+}
+
+.alternative_text .link {
+    color: inherit;
+}
+
+@media screen and (max-width: 1080px) {
+    .error_view {
+        padding: 15px 25px;
+        margin: 0;
+        width: calc(100% - 50px);
+        border-radius: 0;
+        max-width: inherit;
+    }
+}
