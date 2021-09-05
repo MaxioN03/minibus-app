@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './style.css';
 
 interface IDirectionButtonProps {
-    onClick: (isIncluded?: boolean) => void,
+    onClick: (isIncluded?: boolean | null) => void,
     onUnInclude?: () => void,
     disabled?: boolean,
     picked: boolean,
@@ -17,7 +17,7 @@ export const DirectionButton = (props: React.PropsWithChildren<IDirectionButtonP
     const [included, setIncluded] = useState<boolean>(false);
 
     useEffect(() => {
-        if(props.included === true || props.included === false) {
+        if (props.included === true || props.included === false) {
             setIncluded(props.included);
         }
 
@@ -29,12 +29,13 @@ export const DirectionButton = (props: React.PropsWithChildren<IDirectionButtonP
 
     const onClick = (event: any) => {
         if (includable) {
-            if(event.target.classList.contains('remove')) {
+            if (event.target.classList.contains('remove')) {
                 setIncluded(false);
                 onClickProps(false);
             } else {
                 setIncluded(true);
-                onClickProps(true);
+                //Send new included value only if it was changed
+                onClickProps(!included ? true : null);
             }
         } else {
             onClickProps();

@@ -31,11 +31,9 @@ const SearchViewFormBlock = ({filters, onUnIncludeBack, isSearching, searchTrips
         });
     }, []);
 
-    const onDirectionButtonClick = (type: DIRECTIONS.FORWARD | DIRECTIONS.BACK, isIncluded?: boolean) => {
+    const onDirectionButtonClick = (type: DIRECTIONS.FORWARD | DIRECTIONS.BACK, isIncluded?: boolean | null) => {
         if (type === DIRECTIONS.BACK) {
-            if (!isIncluded) {
-                setPickedDirection(DIRECTIONS.FORWARD);
-            } else {
+            if (isIncluded) {
                 let forwardFilterObject = filters?.[DIRECTIONS.FORWARD];
                 let searchParams = new URLSearchParams(location.search);
 
@@ -50,6 +48,10 @@ const SearchViewFormBlock = ({filters, onUnIncludeBack, isSearching, searchTrips
                 }
                 history.push(`${location.pathname}?${searchParams}`);
 
+                setPickedDirection(type);
+            } else if (isIncluded === false) {
+                setPickedDirection(DIRECTIONS.FORWARD);
+            } else {
                 setPickedDirection(type);
             }
         } else {
