@@ -40,7 +40,6 @@ export const Select = (props: ISelectProps) => {
         }
         if (initialValue === null) {
             setSelectedValue(null);
-            setInputValue('');
         }
     }, [options, initialValue]);
 
