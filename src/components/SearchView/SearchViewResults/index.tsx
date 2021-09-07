@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import style from "./index.module.css";
 import ErrorViewFailedRequest from "../../ErrorViewFailedRequest";
 import {Switcher} from "../../ui/Switcher";
@@ -13,6 +13,11 @@ interface ISearchViewResultsProps {
 
 const SearchViewResults = ({isSearching, error, tripsObjects}: ISearchViewResultsProps) => {
     const [pickedResult, setPickedResult] = useState<string>(DIRECTIONS.FORWARD);
+
+    useEffect(() => {
+        let existingResult = tripsObjects?.find(tripsObject => tripsObject.direction);
+        setPickedResult(existingResult?.direction ?? DIRECTIONS.FORWARD);
+    }, [tripsObjects]);
 
     const isBackTripsExist = () => !!tripsObjects?.find(tripObject => tripObject.direction === DIRECTIONS.BACK);
 

@@ -6,7 +6,7 @@ const DEFAULT_VALUE = 1;
 
 interface ICountPickerProps {
     placeholder: string,
-    onChange: (value: number) => void,
+    onChange: (value: number | null) => void,
     initialValue?: number | null,
     className?: string,
 }
@@ -20,14 +20,11 @@ export const CountPicker = (props: ICountPickerProps) => {
     let ignoreBlur = false;
 
     useEffect(() => {
+        setInputValue(DEFAULT_VALUE);
         props.onChange(DEFAULT_VALUE);
     }, []);
 
     useEffect(() => {
-        if (initialValue === null) {
-            setInputValue(DEFAULT_VALUE);
-            props.onChange(DEFAULT_VALUE);
-        }
         if (typeof initialValue === 'number' && !isNaN(initialValue)) {
             setInputValue(initialValue);
             props.onChange(initialValue ? +initialValue : DEFAULT_VALUE);
@@ -68,6 +65,8 @@ export const CountPicker = (props: ICountPickerProps) => {
         setInputValue(inputValue);
         if (inputValue) {
             props.onChange(inputValue);
+        } else {
+            props.onChange(null);
         }
     };
 
@@ -79,7 +78,10 @@ export const CountPicker = (props: ICountPickerProps) => {
                 onMouseUp={clearIgnoreBlur}
                 onMouseOut={clearIgnoreBlur}>
         <div className={'select_placeholder'}>{placeholder || 'Количество'}</div>
-        <input type={'number'} pattern="\d*" min={1} value={inputValue} ref={countPickerInput}
-               className={'select_input'} onChange={onInputChange}/>
+        <input type={'number'} pattern="\d*"
+               min={1} value={inputValue}
+               ref={countPickerInput}
+               className={'select_input'}
+               onChange={onInputChange}/>
     </div>;
 };

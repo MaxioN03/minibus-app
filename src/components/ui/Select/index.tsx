@@ -39,7 +39,12 @@ export const Select = (props: ISelectProps) => {
             setInputValue(selectedOptions.text);
         }
         if (initialValue === null) {
-            setSelectedValue(null);
+            if (selectedValue !== null) {
+                setSelectedValue(null);
+            }
+            if (inputValue && !isOptionsListShow) {
+                setInputValue('');
+            }
         }
     }, [options, initialValue]);
 
