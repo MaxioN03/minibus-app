@@ -19,17 +19,21 @@ const SearchViewResults = ({isSearching, error, tripsObjects}: ISearchViewResult
         setPickedResult(existingResult?.direction ?? DIRECTIONS.FORWARD);
     }, [tripsObjects]);
 
-    const isBackTripsExist = () => !!tripsObjects?.find(tripObject => tripObject.direction === DIRECTIONS.BACK);
+    const isTripsByDirectionExist = (direction: DIRECTIONS) => {
+        return !!tripsObjects?.find(tripObject => tripObject.direction === direction);
+    };
 
     let currentResultObject = tripsObjects?.find(trip => trip.direction === pickedResult);
 
     return <>
         {tripsObjects?.length
             ? <div className={style.results_switcher_container}>
-                <Switcher onClick={setPickedResult} disabled={!isBackTripsExist()} options={[
-                    {value: DIRECTIONS.FORWARD, selected: pickedResult === DIRECTIONS.FORWARD, text: 'Туда'},
-                    {value: DIRECTIONS.BACK, selected: pickedResult === DIRECTIONS.BACK, text: 'Обратно'},
-                ]}/>
+                <Switcher onClick={setPickedResult}
+                          disabled={!isTripsByDirectionExist(DIRECTIONS.FORWARD) || !isTripsByDirectionExist(DIRECTIONS.BACK)}
+                          options={[
+                              {value: DIRECTIONS.FORWARD, selected: pickedResult === DIRECTIONS.FORWARD, text: 'Туда'},
+                              {value: DIRECTIONS.BACK, selected: pickedResult === DIRECTIONS.BACK, text: 'Обратно'},
+                          ]}/>
             </div>
             : null}
         {error

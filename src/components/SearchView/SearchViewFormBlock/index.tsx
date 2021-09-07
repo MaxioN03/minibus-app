@@ -84,7 +84,8 @@ const SearchViewFormBlock = ({filters, onUnIncludeBack, isSearching, searchTrips
             </div>
             <div className={style.search_controls_container}>
                 <SearchViewForm prefix={pickedDirection} stationsOptions={stationsOptions}/>
-                <SearchButton disabled={isSearching || !isMainFiltersExist(filters[DIRECTIONS.FORWARD])}
+                <SearchButton disabled={isSearching
+                || (!isMainFiltersExist(filters[DIRECTIONS.FORWARD]) && !isMainFiltersExist(filters[DIRECTIONS.BACK]))}
                               onClick={searchTrips}/>
             </div>
         </div>
